@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import {
   Platform,
@@ -24,9 +24,9 @@ const HomeScreen = ({ navigation }) => {
     // StatusBar.setHidden(true);
   }, [dispatch]);
 
-  const getRecipes = async () => {
+  const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
-  };
+  });
   return (
     <Container
       style={{

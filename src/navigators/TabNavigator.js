@@ -9,6 +9,7 @@ import FavourtieScreenNavigator from "./FavouritesScreenNavigator";
 import ProfileScreenNavigator from "./ProfileScreenNavigator";
 import AddRecipeNavigator from "./AddRecipeNavigator";
 import { useSelector } from "react-redux";
+import AllRecipeTabNavigator from "./AllRecipeTabNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +61,7 @@ export const TabNavigator = () => {
 
       <Tab.Screen
         name="Favourites"
-        component={FavourtieScreenNavigator}
+        component={AllRecipeTabNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="md-heart" size={23} color={color} />

@@ -81,11 +81,7 @@ const FavouritesScreen = ({ navigation }) => {
   // });
 
   return (
-    <Container
-      style={{
-        marginTop: Platform.OS === "android" ? StatusBar.currentHeight + 20 : 0
-      }}
-    >
+    <Container>
       <ScrollView>
         <ScreenTitle>Favourite Recipe</ScreenTitle>
 
@@ -141,6 +137,7 @@ const Container = styled.SafeAreaView`
   flex: 1;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  padding-top: 10px;
 `;
 
 const ScreenTitle = styled.Text`

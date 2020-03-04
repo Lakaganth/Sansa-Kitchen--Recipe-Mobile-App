@@ -10,7 +10,10 @@ const SpecialsCard = props => {
   return (
     <TouchableNativeFeedback
       onPress={() =>
-        props.navigation.navigate("Detail", { dish: props.recipe })
+        props.navigation.navigate("Detail", {
+          dish: props.recipe,
+          setPaddings: props.setPaddings
+        })
       }
     >
       <Container
@@ -45,7 +48,6 @@ const Container = styled.View`
   overflow: hidden;
 
   margin: 20px 10px 20px 20px;
-  margin-bottom: 20px;
 `;
 
 const ImageContainer = styled.Image`

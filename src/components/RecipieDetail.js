@@ -24,6 +24,9 @@ const RecipieDetail = ({ navigation, route }) => {
   const currentUser = useSelector(state => state.user.currentUser);
   const dispatch = useDispatch();
   const dish = route.params.dish;
+  const setPaddings = route.params.setPaddings;
+
+  console.log(setPaddings);
 
   const [heart, setHeart] = useState(
     currentUser ? currentUser.favourites.includes(dish.rID) : null
@@ -39,7 +42,11 @@ const RecipieDetail = ({ navigation, route }) => {
   return (
     <Container
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 30 : 0
+        paddingTop: !setPaddings
+          ? Platform.OS === "android"
+            ? StatusBar.currentHeight + 30
+            : 0
+          : null
       }}
     >
       <SafeAreaView>
@@ -125,6 +132,7 @@ const Container = styled.View`
   flex: 1;
   width: 100%;
   height: 1000px;
+
   /* background-color: #2d132c; */
 `;
 

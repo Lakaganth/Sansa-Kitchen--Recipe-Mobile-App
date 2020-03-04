@@ -47,6 +47,7 @@ const Ingredients = styled.Text`
   font-weight: 500;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.6);
+  width: 100%;
   /* height: 40px; */
   text-transform: capitalize;
   /* width: 70px; */
@@ -55,6 +56,7 @@ const Ingredients = styled.Text`
 const IngredientsQuant = styled.Text`
   font-weight: 500;
   font-size: 14px;
+  width: 40%;
   color: rgba(0, 0, 0, 0.6);
   text-transform: capitalize;
   position: absolute;

@@ -138,32 +138,3 @@ const CategoriesBoxContainer = styled.View`
   justify-content: space-between;
   flex-wrap: wrap;
 `;
-
-const categories = [
-  {
-    id: 1,
-    catName: "salads",
-    catImage: require("../../assets/images/salad.jpg")
-  },
-  {
-    id: 2,
-    catName: "chocolates",
-    catImage: require("../../assets/images/chocolates.jpg")
-  },
-  {
-    id: 3,
-    catName: "ice creams",
-    catImage: require("../../assets/images/icecream.jpg")
-  },
-  {
-    id: 4,
-    catName: "cakes",
-    catImage: require("../../assets/images/cakes.jpg")
-  },
-  {
-    id: 5,
-    catName: "curry",
-    catImage: require("../../assets/images/curry.jpg")
-  },
-  { id: 6, catName: "soups", catImage: require("../../assets/images/soup.jpg") }
-];

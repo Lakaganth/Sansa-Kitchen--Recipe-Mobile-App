@@ -63,6 +63,8 @@ const Title = styled.Text`
   font-weight: 600;
   font-size: 20px;
   line-height: 30px;
+  width: 100%;
+  text-align: center;
   letter-spacing: 0.04px;
   color: #ffffff;
   align-self: center;

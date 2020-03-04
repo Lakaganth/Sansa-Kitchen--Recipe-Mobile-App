@@ -20,8 +20,6 @@ export const addCategory = (name, imageURL) => {
         .collection("categories")
         .add({ ...category });
 
-      console.log("after", name);
-
       return dispatch({ type: ADD_CATEGORY, category });
     } catch (err) {
       return dispatch({ type: ERROR, err });
@@ -54,7 +52,6 @@ export const addRecipe = recipe => {
         .firestore()
         .collection("allRecipes")
         .add({ ...recipe });
-      console.log("Uploaded to FireBase", recipe);
 
       return dispatch({ type: ADD_RECIPE, recipe });
     } catch (err) {
