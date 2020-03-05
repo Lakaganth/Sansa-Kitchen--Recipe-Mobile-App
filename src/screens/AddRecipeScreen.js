@@ -32,7 +32,7 @@ const AddRecipeScreen = () => {
   const cat = useSelector(state => state.recipe.categories);
   const currentUser = useSelector(state => state.user.currentUser);
 
-  const [category, setCategory] = useState(cat.map(c => c.data.catName));
+  const [category, setCategory] = useState(cat.map(c => c.catName));
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [catObj, setCatObj] = useState();
   const ingredients = useSelector(state => state.input.ingredients);
@@ -42,8 +42,6 @@ const AddRecipeScreen = () => {
   const [desc, setDesc] = useState("");
   const [duration, setDuration] = useState("");
   const [imgURL, setImgURL] = useState("");
-
-  // console.log("selectedCategory", selectedCategory);
 
   useEffect(() => {
     getCategories();
@@ -95,25 +93,22 @@ const AddRecipeScreen = () => {
   };
 
   const handleAddRecipe = async () => {
-    console.log("selectedCategory", selectedCategory);
     const filteredCatArr = cat.filter(c => c.cID == selectedCategory);
-    // console.log("selectedCategory", filteredCatArr[0]);
     await setCatObj(filteredCatArr[0]);
-    // console.log("catObj", catObj);
 
     const recipe = {
       title: rName,
       desc: desc,
-      categoryRecipe: filteredCatArr[0],
+      categoryRecipe: filteredCatArr[0].cID,
       ingredients,
       instructions,
       image: imgURL,
       ownerID: currentUser.id,
-      favouritedBy: []
+      favouritedBy: [],
+      createdAt: new Date()
     };
 
     await dispatch(RecipeActions.addRecipe(recipe));
-    console.log("Uploaded");
   };
 
   return (
@@ -142,11 +137,7 @@ const AddRecipeScreen = () => {
             >
               {cat
                 ? cat.map(c => (
-                    <Picker.Item
-                      key={c.cID}
-                      label={c.data.catName}
-                      value={c.cID}
-                    />
+                    <Picker.Item key={c.cID} label={c.catName} value={c.cID} />
                   ))
                 : null}
             </Picker>

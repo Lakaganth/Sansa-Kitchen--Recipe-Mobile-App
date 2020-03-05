@@ -10,12 +10,13 @@ import { BlurView } from "expo-blur";
 import { Alert, Animated, Dimensions } from "react-native";
 import * as AuthActions from "../../store/actions/authActions";
 import { useSelector, useDispatch } from "react-redux";
-// import SuccessAnim from "./SuccessAnim";
+import SuccessAnim from "./SuccessAnim";
 
 const screenHeight = Dimensions.get("window").height;
 
 const LoginModal = () => {
   const dispatch = useDispatch();
+  const loginSuccess = useSelector(state => state.auth.loginSuccess);
   const modalState = useSelector(state => state.auth.openLoginModal);
 
   const [email, setEmail] = useState("");
@@ -130,7 +131,7 @@ const LoginModal = () => {
           </TouchableOpacity>
         </AnimatedModal>
       </KeyboardAvoidingView>
-      {/* <LoginSuccess isActive={isSuccessful} /> */}
+      <SuccessAnim isActive={loginSuccess} />
       {/* <Loading isActive={this.state.isLoading} /> */}
     </AnimatedContainer>
   );

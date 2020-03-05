@@ -32,11 +32,10 @@ export const getCategories = () => {
       const res = await firebase
         .firestore()
         .collection("categories")
+        .orderBy("catName", "asc")
         .get();
       const categories = [];
-      await res.forEach(doc =>
-        categories.push({ cID: doc.id, data: doc.data() })
-      );
+      await res.forEach(doc => categories.push({ cID: doc.id, ...doc.data() }));
       return dispatch({ type: GET_CATEGORIES, categories });
     } catch (err) {
       return dispatch({ type: ERROR, err });
@@ -60,22 +59,15 @@ export const addRecipe = recipe => {
   };
 };
 
-export const getRecipes = () => {
+export const getRecipes = (order = "desc") => {
   return async dispatch => {
     try {
       const res = await firebase
         .firestore()
         .collection("allRecipes")
+        .orderBy("createdAt", order)
         .get();
       let recipes = [];
-      // const res = await firebase
-      //   .firestore()
-      //   .collection("allRecipes")
-      //   .onSnapshot(async querySnapshot => {
-      //     querySnapshot.forEach(doc =>
-      //       recipes.push({ rID: doc.id, ...doc.data() })
-      //     );
-      //   });
 
       await res.forEach(doc => recipes.push({ rID: doc.id, ...doc.data() }));
       return dispatch({ type: GET_RECIPES, recipes });

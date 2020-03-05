@@ -46,7 +46,7 @@ const CategoryScreen = ({ navigation }) => {
   return (
     <Container
       style={{
-        marginTop: Platform.OS === "android" ? StatusBar.currentHeight + 20 : 0
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 20 : 0
       }}
     >
       {modalState ? <CategoriesModal /> : null}
@@ -70,8 +70,8 @@ const CategoryScreen = ({ navigation }) => {
             <CategoryBox
               key={item.cID}
               catID={item.cID}
-              title={item.data.catName}
-              img={item.data.catImg}
+              title={item.catName}
+              img={item.catImg}
               navigation={navigation}
             />
           ))}

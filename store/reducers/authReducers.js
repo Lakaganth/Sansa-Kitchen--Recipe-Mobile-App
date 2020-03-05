@@ -10,6 +10,7 @@ import {
 
 const initialState = {
   user: "",
+  loginSuccess: false,
   openLoginModal: false,
   openRegisterModal: false,
   errorMessage: ""
@@ -18,11 +19,11 @@ const initialState = {
 export default (state = { initialState }, action) => {
   switch (action.type) {
     case SIGNIN_USER:
-      return { ...state, user: action.user };
+      return { ...state, user: action.user, loginSuccess: true };
     case REGISTER_USER:
-      return { ...state, user: action.user };
+      return { ...state, user: action.user, loginSuccess: true };
     case SIGNOUT_USER:
-      return { ...state, user: "" };
+      return { ...state, user: "", loginSuccess: false };
     case OPEN_LOGIN_MODAL:
       return { ...state, openLoginModal: true };
     case CLOSE_LOGIN_MODAL:

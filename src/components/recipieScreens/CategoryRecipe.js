@@ -33,7 +33,7 @@ const CategoryRecipe = ({ route, navigation }) => {
   const selectedCatObj = resCat[0];
   // console.log("CAt", catRedux);
 
-  const resRecipes = recipieRedux.filter(r => r.categoryRecipe.cID == cID);
+  const resRecipes = recipieRedux.filter(r => r.categoryRecipe == cID);
 
   return (
     <Container>

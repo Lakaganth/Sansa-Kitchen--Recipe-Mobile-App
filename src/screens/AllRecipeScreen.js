@@ -7,18 +7,17 @@ import SpecialsCard from "../components/SpecialsCard";
 import * as RecipeActions from "../../store/actions/recipeActions";
 
 const AllRecipeScreen = ({ navigation }) => {
-  const recipes = useSelector(state => state.recipe.recipes);
   const dispatch = useDispatch();
+  const recipes = useSelector(state => state.recipe.recipes);
+  const [sortType, setSortType] = useState("desc");
 
   useEffect(() => {
     getRecipes();
-  }, [dispatch]);
+  }, [dispatch, sortType]);
 
   const getRecipes = useCallback(async () => {
-    await dispatch(RecipeActions.getRecipes());
-  });
-
-  const [sortType, setSortType] = useState("Recent");
+    await dispatch(RecipeActions.getRecipes(sortType));
+  }, [sortType]);
 
   const headerAllrecipeComponent = () => {
     return (
@@ -32,9 +31,9 @@ const AllRecipeScreen = ({ navigation }) => {
               style={{ height: 50, width: 120 }}
               onValueChange={(itemValue, itemIndex) => setSortType(itemValue)}
             >
-              <Picker.Item label="Recent" value="recent" />
-              <Picker.Item label="Old First" value="old" />
-              <Picker.Item label="A-Z" value="alpha" />
+              <Picker.Item label="Recent" value="desc" />
+              <Picker.Item label="Old First" value="asc" />
+              {/* <Picker.Item label="A-Z" value="alpha" /> */}
             </Picker>
           </SortDropDownContainer>
         </SortContainer>

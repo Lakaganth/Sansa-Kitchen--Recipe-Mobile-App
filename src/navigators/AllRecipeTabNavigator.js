@@ -5,6 +5,7 @@ import AllRecipeScreenNavigator from "./AllRecipeScreenNavigator";
 import styled from "styled-components";
 import { Platform, StatusBar } from "react-native";
 import { useSelector } from "react-redux";
+import RecipeCardScreen from "../screens/RecipeCardScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +15,8 @@ const AllRecipeTabNavigator = () => {
   return (
     <Container>
       <Tab.Navigator>
-        <Tab.Screen name="All" component={AllRecipeScreenNavigator} />
+        {/* <Tab.Screen name="All" component={AllRecipeScreenNavigator} /> */}
+        <Tab.Screen name="All" component={RecipeCardScreen} />
         {currentUser ? (
           <Tab.Screen name="Favs" component={FavourtieScreenNavigator} />
         ) : null}

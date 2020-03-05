@@ -20,6 +20,7 @@
     "expo-image-picker": "~8.0.1",
     "firebase": "^7.9.0",
     "firestore-size": "^2.0.5",
+    "lottie-react-native": "^3.3.2",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",

@@ -18,7 +18,7 @@ export const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Category"
+      initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "#F56565",
 

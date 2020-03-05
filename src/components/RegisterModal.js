@@ -61,7 +61,6 @@ const RegisterModal = () => {
       quality: 1
     });
 
-    console.log("IMG", result);
     const img = result.uri;
 
     const imgName = img.split("/").pop();

@@ -15,8 +15,6 @@ const ProfileScreen = () => {
   const registerModalState = useSelector(state => state.auth.openRegisterModal);
   const dispatch = useDispatch();
 
-  // console.log(user);
-
   useEffect(() => {
     getUserProfile();
   }, [user]);

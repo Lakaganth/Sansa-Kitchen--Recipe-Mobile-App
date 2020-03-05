@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { Platform, StatusBar, Picker, ScrollView } from "react-native";
-import { Dropdown } from "react-native-material-dropdown";
+import { Picker, ScrollView } from "react-native";
+
 import { useSelector, useDispatch } from "react-redux";
 import SpecialsCard from "./../components/SpecialsCard";
 import * as UserActions from "../../store/actions/userActions";
@@ -12,22 +12,10 @@ const FavouritesScreen = ({ navigation }) => {
   const [sortType, setSortType] = useState("Recent");
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.user.currentUser);
-  const allRecipes = useSelector(state => state.recipe.recipes);
-  // const userFavourites = currentUser.favourites;
+
   const favouriteRedux = useSelector(state => state.recipe.favourites);
 
-  // const favs = allRecipes.filter(r => {
-  //   console.log("fav", r.favouritedBy);
-  //   r.favouritedBy.filter(rec => rec == currentUser.id);
-  // });
-
   let fav = [];
-
-  // allRecipes.map(rec => {
-  //   fav = rec.favouritedBy.forEach(r => {
-  //     console.log(r, "r");
-  //   });
-  // });
 
   useEffect(() => {
     // getFavourites();

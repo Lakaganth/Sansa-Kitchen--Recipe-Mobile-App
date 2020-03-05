@@ -26,8 +26,6 @@ const RecipieDetail = ({ navigation, route }) => {
   const dish = route.params.dish;
   const setPaddings = route.params.setPaddings;
 
-  console.log(setPaddings);
-
   const [heart, setHeart] = useState(
     currentUser ? currentUser.favourites.includes(dish.rID) : null
   );
