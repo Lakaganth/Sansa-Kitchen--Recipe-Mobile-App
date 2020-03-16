@@ -1,50 +1,53 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import LottieView from "lottie-react-native";
 import { Animated, Dimensions } from "react-native";
-import animationData from "../../assets/images/433-checked-done.json";
 
 const screenHeight = Dimensions.get("window").height;
 
-const defaultOptions = {
-  animationData: animationData
-};
+class SuccessAnim extends React.Component {
+  state = {
+    top: new Animated.Value(0),
+    opacity: new Animated.Value(0)
+  };
 
-const SuccessAnim = props => {
-  let animation = null;
-  const [top, setTop] = useState(new Animated.Value(0));
-  const [opacity, setOpacity] = useState(new Animated.Value(0));
+  componentDidMount() {
+    console.log(this.props.isActive);
+  }
 
-  useEffect(() => {
-    console.log("I'm open");
-    if (props.isActive) {
-      Animated.timing(top, { toValue: 0, duration: 0 }).start();
-      Animated.timing(opacity, { toValue: 1 }).start();
-      animation.current.play();
+  componentDidUpdate() {
+    if (this.props.isActive) {
+      Animated.timing(this.state.top, { toValue: 0, duration: 0 }).start();
+      Animated.timing(this.state.opacity, { toValue: 1 }).start();
+
+      this.animation.play();
     } else {
-      Animated.timing(top, {
+      Animated.timing(this.state.top, {
         toValue: screenHeight,
         duration: 0
       }).start();
-      Animated.timing(opacity, { toValue: 0 }).start();
-
-      //   animation.loop = false;
+      Animated.timing(this.state.opacity, { toValue: 0 }).start();
+      this.animation.loop = false;
     }
-  }, []);
+  }
 
-  return (
-    <AnimatedContainer style={{ top: top, opacity: opacity }}>
-      <LottieView
-        loop={true}
-        autoplay={true}
-        source={require("../../assets/images/433-checked-done.json")}
-        ref={animation => {
-          animation = animation;
-        }}
-      />
-    </AnimatedContainer>
-  );
-};
+  render() {
+    return (
+      <AnimatedContainer
+        style={{ top: this.state.top, opacity: this.state.opacity }}
+      >
+        <LottieView
+          source={require("../../assets/images/433-checked-done.json")}
+          autoPlay={false}
+          loop={false}
+          ref={animation => {
+            this.animation = animation;
+          }}
+        />
+      </AnimatedContainer>
+    );
+  }
+}
 
 export default SuccessAnim;
 

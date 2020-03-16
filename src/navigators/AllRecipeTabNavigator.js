@@ -15,8 +15,8 @@ const AllRecipeTabNavigator = () => {
   return (
     <Container>
       <Tab.Navigator>
-        {/* <Tab.Screen name="All" component={AllRecipeScreenNavigator} /> */}
-        <Tab.Screen name="All" component={RecipeCardScreen} />
+        <Tab.Screen name="All" component={AllRecipeScreenNavigator} />
+        {/* <Tab.Screen name="All" component={RecipeCardScreen} /> */}
         {currentUser ? (
           <Tab.Screen name="Favs" component={FavourtieScreenNavigator} />
         ) : null}

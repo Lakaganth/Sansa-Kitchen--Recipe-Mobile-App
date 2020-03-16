@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import styled from "styled-components";
-import { Picker, ScrollView, FlatList } from "react-native";
+import { Picker, KeyboardAvoidingView, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import SpecialsCard from "../components/SpecialsCard";
 import * as RecipeActions from "../../store/actions/recipeActions";
@@ -9,7 +9,11 @@ import * as RecipeActions from "../../store/actions/recipeActions";
 const AllRecipeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const recipes = useSelector(state => state.recipe.recipes);
+  const [searchTerm, setSearchTerm] = useState("")
   const [sortType, setSortType] = useState("desc");
+  
+
+  console.log(searchTerm)
 
   useEffect(() => {
     getRecipes();
@@ -17,12 +21,22 @@ const AllRecipeScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes(sortType));
-  }, [sortType]);
+  }, [dispatch,sortType]);
 
   const headerAllrecipeComponent = () => {
     return (
       <>
         <ScreenTitle>All Recipes</ScreenTitle>
+        <SearchBarContainer>
+          <KeyboardAvoidingView
+            behavior="padding"
+            enabled
+            keyboardVerticalOffset={100}
+          >
+            <SearchInput placeholder="Find recipes..."
+             onChangeText={term =>setSearchTerm(term)} />
+          </KeyboardAvoidingView>
+        </SearchBarContainer>
         <SortContainer>
           <SortTitle>Sort</SortTitle>
           <SortDropDownContainer>
@@ -108,4 +122,19 @@ const SortDropDownContainer = styled.View`
 const FlatListContainer = styled.View`
   flex: 1;
   /* position: absolute; */
+`;
+
+const SearchBarContainer = styled.View`
+  width: 80%;
+  height: 50px;
+  border: 1px solid #dddddd;
+  align-self: center;
+  justify-content: center;
+  padding-left: 20px;
+  margin: 20px 0;
+`;
+const SearchInput = styled.TextInput`
+  font-weight: 200;
+  font-size: 16px;
+  line-height: 27px;
 `;

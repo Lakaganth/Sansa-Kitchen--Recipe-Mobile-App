@@ -7,6 +7,7 @@ import SpecialsCard from "./../components/SpecialsCard";
 import * as UserActions from "../../store/actions/userActions";
 import firebase from "./../../config";
 import * as RecipeActions from "../../store/actions/recipeActions";
+import { FlatList } from "react-native";
 
 const FavouritesScreen = ({ navigation }) => {
   const [sortType, setSortType] = useState("Recent");
@@ -35,6 +36,8 @@ const FavouritesScreen = ({ navigation }) => {
         // await dispatch(UserActions.getFavourites(userFavourites));
       });
 
+   
+
     const favouriteRecipeListner = firebase
       .firestore()
       .collection("allRecipes")
@@ -56,7 +59,7 @@ const FavouritesScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
-  });
+  },[dispatch]);
 
   // const getFavourites = useCallback(async () => {
   //   await dispatch(UserActions.getFavourites(userFavourites));
@@ -68,27 +71,34 @@ const FavouritesScreen = ({ navigation }) => {
   //   }
   // });
 
+  const headComponent =() =>{
+    return (
+      <>
+      <ScreenTitle>Favourite Recipe</ScreenTitle>
+      <SortContainer>
+        <SortTitle>Sort</SortTitle>
+        <SortDropDownContainer>
+          <Picker
+            selectedValue={sortType}
+            style={{ height: 50, width: 120 }}
+            onValueChange={(itemValue, itemIndex) => setSortType(itemValue)}
+          >
+            <Picker.Item label="Recent" value="recent" />
+            <Picker.Item label="Old First" value="old" />
+            <Picker.Item label="A-Z" value="alpha" />
+          </Picker>
+        </SortDropDownContainer>
+      </SortContainer>
+      </>
+    )
+  }
+
   return (
     <Container>
-      <ScrollView>
-        <ScreenTitle>Favourite Recipe</ScreenTitle>
-
-        <SortContainer>
-          <SortTitle>Sort</SortTitle>
-          <SortDropDownContainer>
-            <Picker
-              selectedValue={sortType}
-              style={{ height: 50, width: 120 }}
-              onValueChange={(itemValue, itemIndex) => setSortType(itemValue)}
-            >
-              <Picker.Item label="Recent" value="recent" />
-              <Picker.Item label="Old First" value="old" />
-              <Picker.Item label="A-Z" value="alpha" />
-            </Picker>
-          </SortDropDownContainer>
-        </SortContainer>
-        <FavourtitesContainer>
-          {favouriteRedux.length > 0
+ 
+       
+      <FavourtitesContainer>
+          {/* {favouriteRedux.length > 0
             ? favouriteRedux.map(r => (
                 <SpecialsCard
                   key={r.rID}
@@ -99,21 +109,19 @@ const FavouritesScreen = ({ navigation }) => {
                   navigation={navigation}
                 />
               ))
-            : null}
-          {/* {fav.length > 0
-            ? fav.map(r => (
-                <SpecialsCard
-                  key={r.rID}
-                  recipe={r}
-                  title={r.title}
-                  description={r.desc}
-                  splImg={r.image}
-                  navigation={navigation}
-                />
-              ))
             : null} */}
+       {
+         favouriteRedux.length > 0
+         ? <FlatList data={favouriteRedux} keyExtractor={item=>item.rID}
+         ListHeaderComponent={headComponent}
+         renderItem={({item})=> <SpecialsCard  recipe={item}
+         title={item.title}
+         description={item.desc}
+         splImg={item.image}
+         navigation={navigation} /> } /> :null
+       }
         </FavourtitesContainer>
-      </ScrollView>
+
     </Container>
   );
 };
@@ -142,7 +150,7 @@ const SortContainer = styled.View`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 `;
 const SortTitle = styled.Text`
   font-style: normal;
@@ -158,7 +166,9 @@ const SortDropDownContainer = styled.View`
 `;
 
 const FavourtitesContainer = styled.View`
-  width: 100%;
+  /* width: 100%; */
+  flex: 1;
+
 `;
 
 const sortType = [

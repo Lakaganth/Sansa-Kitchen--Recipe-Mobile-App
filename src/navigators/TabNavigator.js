@@ -26,7 +26,8 @@ export const TabNavigator = () => {
 
         inactiveTintColor: "grey",
         showLabel: false,
-        showIcon: true
+        showIcon: true,
+        keyboardHidesTabBar: true,
       }}
     >
       <Tab.Screen

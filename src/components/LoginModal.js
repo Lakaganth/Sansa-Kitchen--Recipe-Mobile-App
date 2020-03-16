@@ -131,7 +131,7 @@ const LoginModal = () => {
           </TouchableOpacity>
         </AnimatedModal>
       </KeyboardAvoidingView>
-      <SuccessAnim isActive={loginSuccess} />
+      {/* <SuccessAnim isActive={loginSuccess} /> */}
       {/* <Loading isActive={this.state.isLoading} /> */}
     </AnimatedContainer>
   );

@@ -190,7 +190,7 @@ const Container = styled.View`
   top: 0;
   left: 0;
   width: 100%;
-  height: ${screenHeight + 50}px;
+  height: ${screenHeight }px;
   background: rgba(0, 0, 0, 0.75);
   justify-content: center;
   align-items: center;
@@ -199,7 +199,7 @@ const Container = styled.View`
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 const Modal = styled.View`
   width: 335px;
-  height: 570px;
+  height: 370px;
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);

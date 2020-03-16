@@ -6,13 +6,15 @@ import {
   Buttton,
   ScrollView,
   TouchableOpacity,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  FlatList
 } from "react-native";
 import SpecialsCard from "../components/SpecialsCard";
 
 import LoginModal from "../components/LoginModal";
 import { useSelector, useDispatch } from "react-redux";
 import * as RecipeActions from "../../store/actions/recipeActions";
+import TrendingBox from "../components/TrendingBox";
 
 const HomeScreen = ({ navigation }) => {
   const recipesRedux = useSelector(state => state.recipe.recipes);
@@ -20,13 +22,15 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     StatusBar.setBarStyle("dark-content", true);
-    getRecipes();
+    // getRecipes();
     // StatusBar.setHidden(true);
   }, [dispatch]);
 
-  const getRecipes = useCallback(async () => {
-    await dispatch(RecipeActions.getRecipes());
-  });
+  // const getRecipes = useCallback(async () => {
+  //   await dispatch(RecipeActions.getRecipes());
+  // });
+
+
   return (
     <Container
       style={{
@@ -38,8 +42,12 @@ const HomeScreen = ({ navigation }) => {
           <ScreenTitle>Sansa's Kitchen</ScreenTitle>
         </TitleContainer>
         <SubtitleContainer>
-          <Subtitle>Trending</Subtitle>
+          <Subtitle>Trending</Subtitle>         
         </SubtitleContainer>
+        <FlatList data={recipesRedux} keyExtractor={item=>item.rID} 
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+          renderItem={({item})=><TrendingBox recipe={item}/>} />
         <SubtitleContainer>
           <Subtitle>Today's Specials</Subtitle>
         </SubtitleContainer>

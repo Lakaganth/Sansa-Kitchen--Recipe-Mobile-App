@@ -137,7 +137,7 @@ const AddRecipeScreen = () => {
             >
               {cat
                 ? cat.map(c => (
-                    <Picker.Item key={c.cID} label={c.catName} value={c.cID} />
+                    <Picker.Item key={c.cID} label={c.catName.toUpperCase()} value={c.cID} />
                   ))
                 : null}
             </Picker>

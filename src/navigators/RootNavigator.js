@@ -1,11 +1,25 @@
 import "react-native-gesture-handler";
-import * as React from "react";
+import React, { useEffect, useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreenNavigator from "./HomeScreenNavigator";
 import { TabNavigator } from "./TabNavigator";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
+import * as RecipeActions from "../../store/actions/recipeActions";
 
 const RootNavigator = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getRecipes();
+    getCategories();
+  }, [dispatch]);
+
+  const getRecipes = useCallback(async () => {
+    await dispatch(RecipeActions.getRecipes());
+  });
+  const getCategories = async () => {
+    await dispatch(RecipeActions.getCategories());
+  };
   return (
     <SafeAreaProvider>
       <NavigationContainer>

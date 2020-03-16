@@ -10,7 +10,11 @@ const HomeScreenNavigator = ({ navigation }) => {
     <>
       <Stack.Navigator mode="modal" headerMode="none">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Detail" component={RecipieDetail} />
+        <Stack.Screen
+          name="Detail"
+          component={RecipieDetail}
+         
+        />
       </Stack.Navigator>
     </>
   );

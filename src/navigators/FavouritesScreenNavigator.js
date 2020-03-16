@@ -8,12 +8,12 @@ const Stack = createStackNavigator();
 
 const FavourtieScreenNavigator = ({ navigation }) => {
   return (
-    <>
+    
       <Stack.Navigator mode="modal" headerMode="none">
         <Stack.Screen name="Favourite" component={FavouritesScreen} />
         <Stack.Screen name="Detail" component={RecipieDetail} />
       </Stack.Navigator>
-    </>
+  
   );
 };
 

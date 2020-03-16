@@ -6,7 +6,7 @@ import RootNavigator from "./src/navigators/RootNavigator";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import authReducers from "./store/reducers/authReducers";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 
 import { YellowBox } from "react-native";
 import _ from "lodash";

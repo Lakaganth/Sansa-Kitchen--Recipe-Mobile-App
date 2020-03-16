@@ -32,13 +32,13 @@ const CategoryScreen = ({ navigation }) => {
   const modalState = useSelector(state => state.input.openCategoryModal);
   const cat = useSelector(state => state.recipe.categories);
 
-  useEffect(() => {
-    getCategories();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   getCategories();
+  // }, [dispatch]);
 
-  const getCategories = async () => {
-    await dispatch(RecipeActions.getCategories());
-  };
+  // const getCategories = async () => {
+  //   await dispatch(RecipeActions.getCategories());
+  // };
   const openModal = async () => {
     await dispatch(InputActions.openCategoryModal());
   };
