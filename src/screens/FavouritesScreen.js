@@ -36,8 +36,6 @@ const FavouritesScreen = ({ navigation }) => {
         // await dispatch(UserActions.getFavourites(userFavourites));
       });
 
-   
-
     const favouriteRecipeListner = firebase
       .firestore()
       .collection("allRecipes")
@@ -59,7 +57,7 @@ const FavouritesScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
-  },[dispatch]);
+  }, [dispatch]);
 
   // const getFavourites = useCallback(async () => {
   //   await dispatch(UserActions.getFavourites(userFavourites));
@@ -71,34 +69,32 @@ const FavouritesScreen = ({ navigation }) => {
   //   }
   // });
 
-  const headComponent =() =>{
+  const headComponent = () => {
     return (
       <>
-      <ScreenTitle>Favourite Recipe</ScreenTitle>
-      <SortContainer>
-        <SortTitle>Sort</SortTitle>
-        <SortDropDownContainer>
-          <Picker
-            selectedValue={sortType}
-            style={{ height: 50, width: 120 }}
-            onValueChange={(itemValue, itemIndex) => setSortType(itemValue)}
-          >
-            <Picker.Item label="Recent" value="recent" />
-            <Picker.Item label="Old First" value="old" />
-            <Picker.Item label="A-Z" value="alpha" />
-          </Picker>
-        </SortDropDownContainer>
-      </SortContainer>
+        <ScreenTitle>Favourite Recipe</ScreenTitle>
+        <SortContainer>
+          <SortTitle>Sort</SortTitle>
+          <SortDropDownContainer>
+            <Picker
+              selectedValue={sortType}
+              style={{ height: 50, width: 120 }}
+              onValueChange={(itemValue, itemIndex) => setSortType(itemValue)}
+            >
+              <Picker.Item label="Recent" value="recent" />
+              <Picker.Item label="Old First" value="old" />
+              <Picker.Item label="A-Z" value="alpha" />
+            </Picker>
+          </SortDropDownContainer>
+        </SortContainer>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <Container>
- 
-       
       <FavourtitesContainer>
-          {/* {favouriteRedux.length > 0
+        {/* {favouriteRedux.length > 0
             ? favouriteRedux.map(r => (
                 <SpecialsCard
                   key={r.rID}
@@ -110,18 +106,24 @@ const FavouritesScreen = ({ navigation }) => {
                 />
               ))
             : null} */}
-       {
-         favouriteRedux.length > 0
-         ? <FlatList data={favouriteRedux} keyExtractor={item=>item.rID}
-         ListHeaderComponent={headComponent}
-         renderItem={({item})=> <SpecialsCard  recipe={item}
-         title={item.title}
-         description={item.desc}
-         splImg={item.image}
-         navigation={navigation} /> } /> :null
-       }
-        </FavourtitesContainer>
-
+        {favouriteRedux.length > 0 ? (
+          <FlatList
+            data={favouriteRedux}
+            keyExtractor={item => item.rID}
+            ListHeaderComponent={headComponent}
+            renderItem={({ item }) => (
+              <SpecialsCard
+                recipe={item}
+                title={item.title}
+                description={item.desc}
+                splImg={item.image}
+                favouriteScreen={true}
+                navigation={navigation}
+              />
+            )}
+          />
+        ) : null}
+      </FavourtitesContainer>
     </Container>
   );
 };
@@ -168,7 +170,6 @@ const SortDropDownContainer = styled.View`
 const FavourtitesContainer = styled.View`
   /* width: 100%; */
   flex: 1;
-
 `;
 
 const sortType = [

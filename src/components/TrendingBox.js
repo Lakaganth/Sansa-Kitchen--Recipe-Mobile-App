@@ -2,9 +2,15 @@ import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { ImageBackground } from "react-native";
 
-const TrendingBox = ({ recipe }) => {
+const TrendingBox = ({ recipe, navigation }) => {
   return (
-    <Container>
+    <Container
+      onPress={() =>
+        navigation.navigate("Detail", {
+          dish: recipe
+        })
+      }
+    >
       <ImageBackground
         source={{ uri: recipe.image }}
         style={{ width: "100%", height: "100%" }}
@@ -17,7 +23,7 @@ const TrendingBox = ({ recipe }) => {
 
 export default TrendingBox;
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   width: 250px;
   height: 150px;
   margin: 10px 20px;

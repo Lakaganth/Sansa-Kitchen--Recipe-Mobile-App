@@ -30,7 +30,6 @@ const HomeScreen = ({ navigation }) => {
   //   await dispatch(RecipeActions.getRecipes());
   // });
 
-
   return (
     <Container
       style={{
@@ -42,12 +41,17 @@ const HomeScreen = ({ navigation }) => {
           <ScreenTitle>Sansa's Kitchen</ScreenTitle>
         </TitleContainer>
         <SubtitleContainer>
-          <Subtitle>Trending</Subtitle>         
+          <Subtitle>Trending</Subtitle>
         </SubtitleContainer>
-        <FlatList data={recipesRedux} keyExtractor={item=>item.rID} 
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-          renderItem={({item})=><TrendingBox recipe={item}/>} />
+        <FlatList
+          data={recipesRedux}
+          keyExtractor={item => item.rID}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TrendingBox recipe={item} navigation={navigation} />
+          )}
+        />
         <SubtitleContainer>
           <Subtitle>Today's Specials</Subtitle>
         </SubtitleContainer>

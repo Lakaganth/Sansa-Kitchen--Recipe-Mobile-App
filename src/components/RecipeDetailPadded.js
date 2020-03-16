@@ -20,13 +20,13 @@ import { useDispatch, useSelector } from "react-redux";
 const screenWidth = Dimensions.get("window").width;
 const InsctructionWidth = screenWidth - 40;
 
-const RecipieDetail = ({ navigation, route }) => {
+const RecipeDetailPadded = ({ route, navigation }) => {
   const currentUser = useSelector(state => state.user.currentUser);
   const dispatch = useDispatch();
   const dish = route.params.dish;
   const setPaddings = route.params.setPaddings;
   const favouriteScreen = route.params.favouriteScreen;
-  console.log(setPaddings);
+  console.log(favouriteScreen);
 
   const [heart, setHeart] = useState(
     currentUser ? currentUser.favourites.includes(dish.rID) : null
@@ -44,7 +44,7 @@ const RecipieDetail = ({ navigation, route }) => {
       style={{
         paddingTop: !setPaddings
           ? Platform.OS === "android"
-            ? StatusBar.currentHeight + 30
+            ? StatusBar.currentHeight - 30
             : 0
           : null
       }}
@@ -126,7 +126,7 @@ const RecipieDetail = ({ navigation, route }) => {
   );
 };
 
-export default RecipieDetail;
+export default RecipeDetailPadded;
 
 const Container = styled.View`
   flex: 1;

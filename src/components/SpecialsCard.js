@@ -7,31 +7,63 @@ const cardWidth = screenWidth - 40;
 const imageWidth = cardWidth - 220;
 
 const SpecialsCard = props => {
+  const { favouriteScreen } = props;
   return (
-    <TouchableNativeFeedback
-      onPress={() =>
-        props.navigation.navigate("Detail", {
-          dish: props.recipe,
-          setPaddings: props.setPaddings
-        })
-      }
-    >
-      <Container
-        style={{
-          width: cardWidth
-        }}
-      >
-        <ImageContainer
-          source={{ uri: props.splImg }}
-          style={{ width: imageWidth }}
-          resizeMode="cover"
-        />
-        <Content>
-          <Title>{props.title}</Title>
-          <Description>{props.description}</Description>
-        </Content>
-      </Container>
-    </TouchableNativeFeedback>
+    <>
+      {favouriteScreen ? (
+        <TouchableNativeFeedback
+          onPress={() =>
+            props.navigation.navigate("DetailPadded", {
+              dish: props.recipe,
+              setPaddings: props.setPaddings,
+              favouriteScreen: props.favouriteScreen
+            })
+          }
+        >
+          <Container
+            style={{
+              width: cardWidth
+            }}
+          >
+            <ImageContainer
+              source={{ uri: props.splImg }}
+              style={{ width: imageWidth }}
+              resizeMode="cover"
+            />
+            <Content>
+              <Title>{props.title}</Title>
+              <Description>{props.description}</Description>
+            </Content>
+          </Container>
+        </TouchableNativeFeedback>
+      ) : (
+        <TouchableNativeFeedback
+          onPress={() =>
+            props.navigation.navigate("Detail", {
+              dish: props.recipe,
+              setPaddings: props.setPaddings,
+              favouriteScreen: props.favouriteScreen
+            })
+          }
+        >
+          <Container
+            style={{
+              width: cardWidth
+            }}
+          >
+            <ImageContainer
+              source={{ uri: props.splImg }}
+              style={{ width: imageWidth }}
+              resizeMode="cover"
+            />
+            <Content>
+              <Title>{props.title}</Title>
+              <Description>{props.description}</Description>
+            </Content>
+          </Container>
+        </TouchableNativeFeedback>
+      )}
+    </>
   );
 };
 
