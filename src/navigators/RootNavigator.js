@@ -4,11 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import HomeScreenNavigator from "./HomeScreenNavigator";
 import { TabNavigator } from "./TabNavigator";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as RecipeActions from "../../store/actions/recipeActions";
+import firebase from "../../config";
 
 const RootNavigator = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     getRecipes();
     getCategories();

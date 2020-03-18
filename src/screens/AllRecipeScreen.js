@@ -9,11 +9,10 @@ import * as RecipeActions from "../../store/actions/recipeActions";
 const AllRecipeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const recipes = useSelector(state => state.recipe.recipes);
-  const [searchTerm, setSearchTerm] = useState("")
   const [sortType, setSortType] = useState("desc");
-  
+  const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(searchTerm)
+  console.log(searchTerm);
 
   useEffect(() => {
     getRecipes();
@@ -21,7 +20,7 @@ const AllRecipeScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes(sortType));
-  }, [dispatch,sortType]);
+  }, [dispatch, sortType]);
 
   const headerAllrecipeComponent = () => {
     return (
@@ -33,8 +32,12 @@ const AllRecipeScreen = ({ navigation }) => {
             enabled
             keyboardVerticalOffset={100}
           >
-            <SearchInput placeholder="Find recipes..."
-             onChangeText={term =>setSearchTerm(term)} />
+            <SearchInput
+              placeholder="Find recipes..."
+              onChangeText={term => setSearchTerm(term)}
+              value={searchTerm}
+              keyboardType="default"
+            />
           </KeyboardAvoidingView>
         </SearchBarContainer>
         <SortContainer>

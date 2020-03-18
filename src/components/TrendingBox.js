@@ -36,7 +36,7 @@ const Container = styled.TouchableOpacity`
 const Name = styled.Text`
   font-weight: 500;
   font-size: 24px;
-  color: #f56565;
+  color: #fff;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;

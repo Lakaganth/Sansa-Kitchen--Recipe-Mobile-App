@@ -10,13 +10,13 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../../config";
-
 import { useSelector, useDispatch } from "react-redux";
 import IngredientsModal from "../components/inputs/IngredientsModal";
 import * as InputActions from "../../store/actions/inputAction";
 import * as RecipeActions from "../../store/actions/recipeActions";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import InstructionsModal from "../components/inputs/InstructionsModal";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -43,6 +43,8 @@ const AddRecipeScreen = () => {
   const [duration, setDuration] = useState("");
   const [imgURL, setImgURL] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     getCategories();
   }, [dispatch]);
@@ -58,19 +60,20 @@ const AddRecipeScreen = () => {
       aspect: [4, 3],
       quality: 1
     });
-
+    setLoading(true);
     const img = result.uri;
-
     const imgName = img.split("/").pop();
     const response = await fetch(img);
     const blob = await response.blob();
-    const res = firebase
+    const res = await firebase
       .storage()
       .ref()
       .child(`images/recipe/submissions/` + imgName);
     await res.put(blob);
     const url = await res.getDownloadURL();
+
     await setImgURL(url);
+    setLoading(false);
   };
 
   const openModal = async () => {
@@ -95,7 +98,7 @@ const AddRecipeScreen = () => {
   const handleAddRecipe = async () => {
     const filteredCatArr = cat.filter(c => c.cID == selectedCategory);
     await setCatObj(filteredCatArr[0]);
-
+    setLoading(true);
     const recipe = {
       title: rName,
       desc: desc,
@@ -109,21 +112,34 @@ const AddRecipeScreen = () => {
     };
 
     await dispatch(RecipeActions.addRecipe(recipe));
+    setRName("");
+    setDesc("");
+    setImgURL("");
+    await dispatch(InputActions.clearIngredientsArray());
+    await dispatch(InputActions.clearInstructionsArray());
+    setLoading(false);
   };
 
   return (
     <Container>
       {modalIngredientsState ? <IngredientsModal /> : null}
       {modalInstructionState ? <InstructionsModal /> : null}
+      <Spinner
+        visible={loading}
+        textContent={"Loading..."}
+        textStyle={{ color: "white" }}
+      />
       <ScrollView>
         <ScreenTitle>Add New Recipe</ScreenTitle>
         <FormContainer>
           <TextInput
+            value={rName}
             onChangeText={name => setRName(name)}
             placeholder="Recipe Name"
             keyboardType="default"
           />
           <TextInput
+            value={desc}
             onChangeText={description => setDesc(description)}
             placeholder="Description"
             keyboardType="default"
@@ -137,7 +153,11 @@ const AddRecipeScreen = () => {
             >
               {cat
                 ? cat.map(c => (
-                    <Picker.Item key={c.cID} label={c.catName.toUpperCase()} value={c.cID} />
+                    <Picker.Item
+                      key={c.cID}
+                      label={c.catName.toUpperCase()}
+                      value={c.cID}
+                    />
                   ))
                 : null}
             </Picker>

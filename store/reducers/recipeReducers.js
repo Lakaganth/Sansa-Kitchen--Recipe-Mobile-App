@@ -2,7 +2,8 @@ import {
   GET_CATEGORIES,
   ADD_RECIPE,
   GET_RECIPES,
-  RECIPE_LISITNER
+  RECIPE_LISITNER,
+  ALL_RECIPE_LISITNER
 } from "../actions/recipeActions";
 import { ADD_CATEGORY } from "./../actions/recipeActions";
 
@@ -19,8 +20,9 @@ export default (state = initialState, action) => {
     case GET_CATEGORIES:
       return { ...state, categories: action.categories };
     case ADD_RECIPE:
-      // const newRecipe = state.recipes;
-      // newRecipe.push(action.recipe);
+      // const newRecipe = [...state.recipes];
+      // newRecipe.push(action.rec);
+      // console.log(newRecipe);
       return { ...state };
     case GET_RECIPES:
       return { ...state, recipes: action.recipes };
@@ -30,6 +32,9 @@ export default (state = initialState, action) => {
         recipies: action.recListner.recipes,
         favourites: action.recListner.favourites
       };
+    case ALL_RECIPE_LISITNER:
+      console.log("REducer", action.recListner.length);
+      return { ...state, recipies: action.recListner };
     default:
       return state;
   }

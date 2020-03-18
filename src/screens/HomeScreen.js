@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import styled from "styled-components";
 import {
   Platform,
@@ -10,6 +10,7 @@ import {
   FlatList
 } from "react-native";
 import SpecialsCard from "../components/SpecialsCard";
+import firebase from "../../config";
 
 import LoginModal from "../components/LoginModal";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,18 +18,61 @@ import * as RecipeActions from "../../store/actions/recipeActions";
 import TrendingBox from "../components/TrendingBox";
 
 const HomeScreen = ({ navigation }) => {
-  const recipesRedux = useSelector(state => state.recipe.recipes);
+  const recipesReduxs = useSelector(state => state.recipe.recipes);
   const dispatch = useDispatch();
+  const [recipesRedux, setRecipesRedux] = useState(recipesReduxs);
 
   useEffect(() => {
     StatusBar.setBarStyle("dark-content", true);
-    // getRecipes();
+    getRecipes();
     // StatusBar.setHidden(true);
+    const addedRecipeListner = firebase
+      .firestore()
+      .collection("allRecipes")
+      .onSnapshot(async querySnapshot => {
+        let recipeObj = [];
+        querySnapshot.forEach(async doc => {
+          recipeObj.push({ rID: doc.id, ...doc.data() });
+        });
+        // console.log(recipeObj, "recipeObj");
+        await dispatch(RecipeActions.allRecipeListner(recipeObj));
+        setRecipesRedux(recipeObj);
+      });
+
+    return () => {
+      addedRecipeListner();
+    };
+  }, []);
+
+  const getRecipes = useCallback(async () => {
+    await dispatch(RecipeActions.getRecipes());
+    console.log("Running");
   }, [dispatch]);
 
-  // const getRecipes = useCallback(async () => {
-  //   await dispatch(RecipeActions.getRecipes());
-  // });
+  console.log("COMPONENT", recipesRedux.length);
+
+  const homeHeaderComp = () => (
+    <>
+      <TitleContainer>
+        <ScreenTitle>Sansa's Kitchen</ScreenTitle>
+      </TitleContainer>
+      <SubtitleContainer>
+        <Subtitle>Trending</Subtitle>
+      </SubtitleContainer>
+      <FlatList
+        data={recipesRedux}
+        keyExtractor={item => item.rID}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TrendingBox recipe={item} navigation={navigation} />
+        )}
+      />
+      <SubtitleContainer>
+        <Subtitle>Today's Specials</Subtitle>
+      </SubtitleContainer>
+    </>
+  );
 
   return (
     <Container
@@ -36,37 +80,23 @@ const HomeScreen = ({ navigation }) => {
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 40 : 0
       }}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <TitleContainer>
-          <ScreenTitle>Sansa's Kitchen</ScreenTitle>
-        </TitleContainer>
-        <SubtitleContainer>
-          <Subtitle>Trending</Subtitle>
-        </SubtitleContainer>
+      {recipesRedux.length > 0 ? (
         <FlatList
           data={recipesRedux}
           keyExtractor={item => item.rID}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={homeHeaderComp}
+          showsVerticalScrollIndicator={true}
           renderItem={({ item }) => (
-            <TrendingBox recipe={item} navigation={navigation} />
+            <SpecialsCard
+              recipe={item}
+              title={item.title}
+              description={item.desc}
+              splImg={item.image}
+              navigation={navigation}
+            />
           )}
         />
-        <SubtitleContainer>
-          <Subtitle>Today's Specials</Subtitle>
-        </SubtitleContainer>
-
-        {recipesRedux.map(r => (
-          <SpecialsCard
-            key={r.rID}
-            recipe={r}
-            title={r.title}
-            description={r.desc}
-            splImg={r.image}
-            navigation={navigation}
-          />
-        ))}
-      </ScrollView>
+      ) : null}
     </Container>
   );
 };
@@ -86,6 +116,8 @@ const ScreenTitle = styled.Text`
   font-weight: 500;
   font-size: 24px;
   color: #f56565;
+  width: 100%;
+  text-align: center;
 `;
 const SubtitleContainer = styled.Text`
   width: 100%;

@@ -9,7 +9,9 @@ import {
   REMOVE_INSTRUCTION,
   OPEN_CATEGORY_MODAL,
   CLOSE_CATEGORY_MODAL,
-  ERROR
+  ERROR,
+  CLEAR_INGREDIENT,
+  CLEAR_INSTRUCTION
 } from "../actions/inputAction";
 
 const initialState = {
@@ -43,6 +45,8 @@ export default (state = initialState, action) => {
         ...state,
         ingredients: removeArr
       };
+    case CLEAR_INGREDIENT:
+      return { ...state, ingredients: [] };
     case ADD_INSTRUCTION:
       const insArr = [...state.instructions];
       insArr.push(action.instruction);
@@ -56,6 +60,8 @@ export default (state = initialState, action) => {
         ...state,
         ingredients: removeInsArr
       };
+    case CLEAR_INSTRUCTION:
+      return { ...state, instructions: [] };
     case OPEN_CATEGORY_MODAL:
       return { ...state, openCategoryModal: true };
     case CLOSE_CATEGORY_MODAL:

@@ -8,6 +8,7 @@ export const GET_RECIPES = "GET_RECIPES";
 export const REMOVE_RECIPE = "REMOVE_RECIPE";
 export const EDIT_RECIPE = "EDIT_RECIPE";
 export const RECIPE_LISITNER = "RECIPE_LISITNER";
+export const ALL_RECIPE_LISITNER = "ALL_RECIPE_LISITNER";
 export const ERROR = "ERROR";
 
 export const addCategory = (name, imageURL) => {
@@ -46,13 +47,15 @@ export const getCategories = () => {
 export const addRecipe = recipe => {
   return async dispatch => {
     try {
-      console.log(recipe);
-      await firebase
+      const res = await firebase
         .firestore()
         .collection("allRecipes")
         .add({ ...recipe });
 
-      return dispatch({ type: ADD_RECIPE, recipe });
+      console.log(res.id);
+
+      let rec = { rID: res.id, ...recipe };
+      return dispatch({ type: ADD_RECIPE });
     } catch (err) {
       return dispatch({ type: ERROR, err });
     }
@@ -127,5 +130,10 @@ export const recipeListner = (obj, currentUser) => {
     };
 
     return dispatch({ type: RECIPE_LISITNER, recListner: recListner });
+  };
+};
+export const allRecipeListner = obj => {
+  return async dispatch => {
+    return dispatch({ type: ALL_RECIPE_LISITNER, recListner: obj });
   };
 };

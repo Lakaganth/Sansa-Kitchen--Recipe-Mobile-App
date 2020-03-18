@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { Picker, ScrollView } from "react-native";
-
 import { useSelector, useDispatch } from "react-redux";
 import SpecialsCard from "./../components/SpecialsCard";
 import * as UserActions from "../../store/actions/userActions";
@@ -57,6 +56,7 @@ const FavouritesScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
+    console.log("HOW");
   }, [dispatch]);
 
   // const getFavourites = useCallback(async () => {

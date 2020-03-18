@@ -1,13 +1,13 @@
-import firebase from "./../../config";
-
 export const OPEN_INGREDIENTS_MODAL = "OPEN_INGREDIENTS_MODAL";
 export const CLOSE_INGREDIENTS_MODAL = "CLOSE_INGREDIENTS_MODAL";
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
+export const CLEAR_INGREDIENT = "CLEAR_INGREDIENT";
 export const OPEN_INSTRUCTION_MODAL = "OPEN_INSTRUCTION_MODAL";
 export const CLOSE_INSTRUCTION_MODAL = "CLOSE_INSTRUCTION_MODAL";
 export const ADD_INSTRUCTION = "ADD_INSTRUCTION";
 export const REMOVE_INSTRUCTION = "REMOVE_INSTRUCTION";
+export const CLEAR_INSTRUCTION = "CLEAR_INSTRUCTION";
 export const OPEN_CATEGORY_MODAL = "OPEN_CATEGORY_MODAL";
 export const CLOSE_CATEGORY_MODAL = "CLOSE_CATEGORY_MODAL";
 export const ERROR = "ERROR";
@@ -83,5 +83,16 @@ export const openCategoryModal = () => {
 export const closeCategoryModal = () => {
   return async dispatch => {
     return dispatch({ type: CLOSE_CATEGORY_MODAL });
+  };
+};
+
+export const clearIngredientsArray = () => {
+  return async dispatch => {
+    return dispatch({ type: CLEAR_INGREDIENT });
+  };
+};
+export const clearInstructionsArray = () => {
+  return async dispatch => {
+    return dispatch({ type: CLEAR_INSTRUCTION });
   };
 };

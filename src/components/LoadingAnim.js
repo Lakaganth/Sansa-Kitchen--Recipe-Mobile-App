@@ -5,15 +5,15 @@ import { Animated, Dimensions } from "react-native";
 
 const screenHeight = Dimensions.get("window").height;
 
-class SuccessAnim extends React.Component {
+class LoadingAnim extends React.Component {
   state = {
     top: new Animated.Value(0),
     opacity: new Animated.Value(0)
   };
 
-  componentDidMount() {
-    console.log(this.props.isActive);
-  }
+  //   componentDidMount() {
+  //     console.log(this.props.isActive);
+  //   }
 
   componentDidUpdate() {
     if (this.props.isActive) {
@@ -37,7 +37,7 @@ class SuccessAnim extends React.Component {
         style={{ top: this.state.top, opacity: this.state.opacity }}
       >
         <LottieView
-          source={require("../../assets/images/433-checked-done.json")}
+          source={require("../../assets/images/loading.json")}
           autoPlay={true}
           loop={false}
           ref={animation => {
@@ -49,7 +49,7 @@ class SuccessAnim extends React.Component {
   }
 }
 
-export default SuccessAnim;
+export default LoadingAnim;
 
 const Container = styled.View`
   width: 100%;
