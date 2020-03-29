@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
         querySnapshot.forEach(async doc => {
           recipeObj.push({ rID: doc.id, ...doc.data() });
         });
-        // console.log(recipeObj, "recipeObj");
+
         await dispatch(RecipeActions.allRecipeListner(recipeObj));
         setRecipesRedux(recipeObj);
       });
@@ -46,10 +46,7 @@ const HomeScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
-    console.log("Running");
   }, [dispatch]);
-
-  console.log("COMPONENT", recipesRedux.length);
 
   const homeHeaderComp = () => (
     <>

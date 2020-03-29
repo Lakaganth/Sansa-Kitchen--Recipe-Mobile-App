@@ -33,7 +33,6 @@ export default (state = initialState, action) => {
         favourites: action.recListner.favourites
       };
     case ALL_RECIPE_LISITNER:
-      console.log("REducer", action.recListner.length);
       return { ...state, recipies: action.recListner };
     default:
       return state;

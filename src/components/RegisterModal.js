@@ -73,7 +73,6 @@ const RegisterModal = () => {
     await res.put(blob);
     const url = await res.getDownloadURL();
     await setImgURL(url);
-    console.log("success");
   };
 
   const modalAnimation = () => {
@@ -190,7 +189,7 @@ const Container = styled.View`
   top: 0;
   left: 0;
   width: 100%;
-  height: ${screenHeight }px;
+  height: ${screenHeight}px;
   background: rgba(0, 0, 0, 0.75);
   justify-content: center;
   align-items: center;

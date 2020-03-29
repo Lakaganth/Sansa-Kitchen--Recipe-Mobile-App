@@ -52,8 +52,6 @@ export const addRecipe = recipe => {
         .collection("allRecipes")
         .add({ ...recipe });
 
-      console.log(res.id);
-
       let rec = { rID: res.id, ...recipe };
       return dispatch({ type: ADD_RECIPE });
     } catch (err) {

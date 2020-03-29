@@ -29,7 +29,12 @@ const AddRecipeScreen = () => {
     state => state.input.openInstructionModal
   );
 
-  const cat = useSelector(state => state.recipe.categories);
+  const catRedux = useSelector(state => state.recipe.categories);
+
+  const cat = [
+    { cID: "lakaganthrox", catImg: "NoImg", catName: "Select one..." },
+    ...catRedux
+  ];
   const currentUser = useSelector(state => state.user.currentUser);
 
   const [category, setCategory] = useState(cat.map(c => c.catName));

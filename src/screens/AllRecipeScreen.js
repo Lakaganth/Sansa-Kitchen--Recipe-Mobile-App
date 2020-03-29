@@ -12,8 +12,6 @@ const AllRecipeScreen = ({ navigation }) => {
   const [sortType, setSortType] = useState("desc");
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(searchTerm);
-
   useEffect(() => {
     getRecipes();
   }, [dispatch, sortType]);
@@ -25,21 +23,6 @@ const AllRecipeScreen = ({ navigation }) => {
   const headerAllrecipeComponent = () => {
     return (
       <>
-        <ScreenTitle>All Recipes</ScreenTitle>
-        <SearchBarContainer>
-          <KeyboardAvoidingView
-            behavior="padding"
-            enabled
-            keyboardVerticalOffset={100}
-          >
-            <SearchInput
-              placeholder="Find recipes..."
-              onChangeText={term => setSearchTerm(term)}
-              value={searchTerm}
-              keyboardType="default"
-            />
-          </KeyboardAvoidingView>
-        </SearchBarContainer>
         <SortContainer>
           <SortTitle>Sort</SortTitle>
           <SortDropDownContainer>
@@ -60,6 +43,21 @@ const AllRecipeScreen = ({ navigation }) => {
 
   return (
     <Container>
+      <ScreenTitle>All Recipes</ScreenTitle>
+      <SearchBarContainer>
+        <KeyboardAvoidingView
+          behavior="padding"
+          enabled
+          keyboardVerticalOffset={100}
+        >
+          <SearchInput
+            placeholder="Find recipes..."
+            onChangeText={term => setSearchTerm(term)}
+            value={searchTerm}
+            keyboardType="default"
+          />
+        </KeyboardAvoidingView>
+      </SearchBarContainer>
       <FlatListContainer>
         <FlatList
           data={recipes}

@@ -17,8 +17,6 @@ const InstructionsModal = () => {
   const dispatch = useDispatch();
   const modalState = useSelector(state => state.input.openInstructionModal);
 
-  console.log(modalState);
-
   const [ins, setIns] = useState("");
   const [top, setTop] = useState(new Animated.Value(screenHeight));
   const [scale, setScale] = useState(new Animated.Value(1.3));

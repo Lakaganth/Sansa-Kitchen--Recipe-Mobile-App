@@ -77,7 +77,6 @@ const CategoriesModal = () => {
       quality: 1
     });
 
-    console.log("IMG", result);
     const img = result.uri;
 
     const imgName = img.split("/").pop();
@@ -90,7 +89,6 @@ const CategoriesModal = () => {
     await res.put(blob);
     const url = await res.getDownloadURL();
     await setImgURL(url);
-    console.log("success");
   };
 
   const handleAddCategory = async () => {

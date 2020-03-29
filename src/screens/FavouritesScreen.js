@@ -56,7 +56,6 @@ const FavouritesScreen = ({ navigation }) => {
 
   const getRecipes = useCallback(async () => {
     await dispatch(RecipeActions.getRecipes());
-    console.log("HOW");
   }, [dispatch]);
 
   // const getFavourites = useCallback(async () => {
