@@ -9,9 +9,11 @@ import {
   Dimensions
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 import firebase from "../../config";
 import { useSelector, useDispatch } from "react-redux";
 import IngredientsModal from "../components/inputs/IngredientsModal";
+
 import * as InputActions from "../../store/actions/inputAction";
 import * as RecipeActions from "../../store/actions/recipeActions";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -20,7 +22,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 const screenWidth = Dimensions.get("window").width;
 
-const AddRecipeScreen = () => {
+const AddRecipeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const modalIngredientsState = useSelector(
     state => state.input.openIngredientModal
@@ -42,12 +44,13 @@ const AddRecipeScreen = () => {
   const [catObj, setCatObj] = useState();
   const ingredients = useSelector(state => state.input.ingredients);
   const instructions = useSelector(state => state.input.instructions);
+  const cameraURL = useSelector(state => state.input.cameraURL);
 
   const [rName, setRName] = useState("");
   const [desc, setDesc] = useState("");
   const [duration, setDuration] = useState("");
   const [imgURL, setImgURL] = useState("");
-
+  const [cameraImageURL, setCameraImageURL] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -57,6 +60,22 @@ const AddRecipeScreen = () => {
   const getCategories = async () => {
     await dispatch(RecipeActions.getCategories());
   };
+
+  // const CameraImage = async () => {
+  //   setLoading(true);
+  //   const img = cameraURL.uri;
+  //   const imgName = img.split("/").pop();
+  //   const response = await fetch(img);
+  //   const blob = await response.blob();
+  //   const res = await firebase
+  //     .storage()
+  //     .ref()
+  //     .child(`images/recipe/submissions/camera/` + imgName);
+  //   await res.put(blob);
+  //   const url = await res.getDownloadURL();
+  //   await setCameraImageURL(url);
+  //   setLoading(false);
+  // };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -79,6 +98,24 @@ const AddRecipeScreen = () => {
 
     await setImgURL(url);
     setLoading(false);
+  };
+
+  const PickDifferentImage = async () => {
+    const n = 2;
+    const loc = cameraURL.split("/").pop();
+    // console.log(loc);
+    const a = loc.split("?").shift();
+    // console.log(loc.split("?").shift());
+    // console.log(a.split("%").pop());
+    const imgname = a.split("%").pop();
+
+    const res = await firebase
+      .storage()
+      .ref()
+      .child(`/images/recipe/submissions/camera/${imgname.substring(n)}`);
+    console.log(res);
+    await res.delete();
+    dispatch(InputActions.setCameraURL(""));
   };
 
   const openModal = async () => {
@@ -110,7 +147,7 @@ const AddRecipeScreen = () => {
       categoryRecipe: filteredCatArr[0].cID,
       ingredients,
       instructions,
-      image: imgURL,
+      image: cameraURL ? cameraURL : imgURL,
       ownerID: currentUser.id,
       favouritedBy: [],
       createdAt: new Date()
@@ -219,20 +256,40 @@ const AddRecipeScreen = () => {
                 </IngContainer>
               ))
             : null}
+          <TouchableNativeFeedback
+            onPress={() => navigation.navigate("Camera")}
+          >
+            <AddContainer>
+              <FormTitle> Get From Camera</FormTitle>
+              <Ionicons name="md-add-circle" size={32} />
+            </AddContainer>
+          </TouchableNativeFeedback>
+          {cameraURL ? (
+            <>
+              <ImageContainer>
+                <Image source={{ uri: cameraURL }} />
+              </ImageContainer>
+              <TouchableNativeFeedback onPress={PickDifferentImage}>
+                <ImageText>Choose a Different Picture</ImageText>
+              </TouchableNativeFeedback>
+            </>
+          ) : null}
+          {cameraURL ? null : (
+            <ImageContainer>
+              <TouchableNativeFeedback onPress={pickImage}>
+                {imgURL ? (
+                  <Image source={{ uri: imgURL }} />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="image-plus"
+                    size={32}
+                    style={{ alignSelf: "center", marginTop: 80 }}
+                  />
+                )}
+              </TouchableNativeFeedback>
+            </ImageContainer>
+          )}
 
-          <ImageContainer>
-            <TouchableNativeFeedback onPress={pickImage}>
-              {imgURL ? (
-                <Image source={{ uri: imgURL }} />
-              ) : (
-                <MaterialCommunityIcons
-                  name="image-plus"
-                  size={32}
-                  style={{ alignSelf: "center", marginTop: 80 }}
-                />
-              )}
-            </TouchableNativeFeedback>
-          </ImageContainer>
           <TouchableNativeFeedback onPress={handleAddRecipe}>
             <Button>
               <ButtonText>Add</ButtonText>
@@ -366,7 +423,8 @@ const Button = styled.View`
   align-items: center;
   border-radius: 10px;
   box-shadow: 0 10px 20px #c2cbff;
-  margin-top: 20px;
+  margin: 0 ${screenWidth / 4}px;
+  margin-top: 30px;
 `;
 
 const ButtonText = styled.Text`
@@ -374,6 +432,8 @@ const ButtonText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  width: 100%;
+  text-align: center;
 `;
 
 const ImageContainer = styled.View`
@@ -383,10 +443,22 @@ const ImageContainer = styled.View`
   border-radius: 20px;
   background-color: grey;
   overflow: hidden;
+  margin: 0 ${screenWidth / 5}px;
+  margin-top: 30px;
 `;
 
 const Image = styled.Image`
   width: 100%;
   height: 100%;
   border-radius: 20px;
+`;
+const ImageTextButton = styled.TouchableNativeFeedback``;
+const ImageText = styled.Text`
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  color: blue;
+  margin-top: 20px;
 `;

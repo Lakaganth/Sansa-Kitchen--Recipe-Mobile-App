@@ -170,7 +170,7 @@ const Text = styled.Text`
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
-  width: 160px;
+  width: 335px;
   text-align: center;
   color: #b8bece;
 `;
@@ -206,6 +206,8 @@ const ButtonText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  width: 100%;
+  text-align: center;
 `;
 const IconEmail = styled.Image`
   width: 24px;

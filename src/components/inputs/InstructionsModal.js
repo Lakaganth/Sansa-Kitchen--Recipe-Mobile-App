@@ -174,4 +174,6 @@ const ButtonText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   text-transform: uppercase;
+  width: 100%;
+  text-align: center;
 `;

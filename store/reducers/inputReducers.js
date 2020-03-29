@@ -11,7 +11,8 @@ import {
   CLOSE_CATEGORY_MODAL,
   ERROR,
   CLEAR_INGREDIENT,
-  CLEAR_INSTRUCTION
+  CLEAR_INSTRUCTION,
+  SET_IMAGE_URL
 } from "../actions/inputAction";
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
   openInstructionModal: false,
   openCategoryModal: false,
   ingredients: [],
-  instructions: []
+  instructions: [],
+  cameraURL: ""
 };
 
 export default (state = initialState, action) => {
@@ -66,7 +68,8 @@ export default (state = initialState, action) => {
       return { ...state, openCategoryModal: true };
     case CLOSE_CATEGORY_MODAL:
       return { ...state, openCategoryModal: false };
-
+    case SET_IMAGE_URL:
+      return { ...state, cameraURL: action.url };
     default:
       return state;
   }

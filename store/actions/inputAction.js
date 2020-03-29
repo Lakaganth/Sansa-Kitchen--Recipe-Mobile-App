@@ -10,6 +10,7 @@ export const REMOVE_INSTRUCTION = "REMOVE_INSTRUCTION";
 export const CLEAR_INSTRUCTION = "CLEAR_INSTRUCTION";
 export const OPEN_CATEGORY_MODAL = "OPEN_CATEGORY_MODAL";
 export const CLOSE_CATEGORY_MODAL = "CLOSE_CATEGORY_MODAL";
+export const SET_IMAGE_URL = "SET_IMAGE_URL";
 export const ERROR = "ERROR";
 
 export const openIngredientsModal = () => {
@@ -94,5 +95,11 @@ export const clearIngredientsArray = () => {
 export const clearInstructionsArray = () => {
   return async dispatch => {
     return dispatch({ type: CLEAR_INSTRUCTION });
+  };
+};
+
+export const setCameraURL = url => {
+  return async dispatch => {
+    return dispatch({ type: SET_IMAGE_URL, url });
   };
 };
