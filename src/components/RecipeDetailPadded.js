@@ -25,8 +25,6 @@ const RecipeDetailPadded = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const dish = route.params.dish;
   const setPaddings = route.params.setPaddings;
-  const favouriteScreen = route.params.favouriteScreen;
-  console.log(favouriteScreen);
 
   const [heart, setHeart] = useState(
     currentUser ? currentUser.favourites.includes(dish.rID) : null

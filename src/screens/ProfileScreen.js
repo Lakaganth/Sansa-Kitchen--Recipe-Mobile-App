@@ -8,11 +8,14 @@ import { useSelector, useDispatch } from "react-redux";
 import * as AuthActions from "../../store/actions/authActions";
 import * as UserActions from "../../store/actions/userActions";
 import RegisterModal from "./../components/RegisterModal";
+import SigninModal from "../components/inputs/SigninModal";
 
 const ProfileScreen = () => {
-  const user = useSelector(state => state.auth.user);
-  const modalState = useSelector(state => state.auth.openLoginModal);
-  const registerModalState = useSelector(state => state.auth.openRegisterModal);
+  const user = useSelector((state) => state.auth.user);
+  const modalState = useSelector((state) => state.auth.openLoginModal);
+  const registerModalState = useSelector(
+    (state) => state.auth.openRegisterModal
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -85,19 +88,7 @@ const ProfileScreen = () => {
         </ProfileContainer>
         <IconList>
           {!user ? (
-            <Icons>
-              <TouchableOpacity onPress={openModal}>
-                <IconContainer style={{ backgroundColor: "#E6FFFA" }}>
-                  <Feather
-                    name="log-in"
-                    size={23}
-                    color="#4FD1C5"
-                    style={{ alignSelf: "center" }}
-                  />
-                </IconContainer>
-              </TouchableOpacity>
-              <IconTitle> Log in</IconTitle>
-            </Icons>
+            <SigninModal />
           ) : (
             <Icons>
               <TouchableOpacity onPress={signout}>

@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Alert, Animated, Dimensions } from "react-native";
@@ -16,8 +16,9 @@ const screenHeight = Dimensions.get("window").height;
 
 const LoginModal = () => {
   const dispatch = useDispatch();
-  const loginSuccess = useSelector(state => state.auth.loginSuccess);
-  const modalState = useSelector(state => state.auth.openLoginModal);
+  const loginSuccess = useSelector((state) => state.auth.loginSuccess);
+  const modalState = useSelector((state) => state.auth.openLoginModal);
+  const errorState = useSelector((state) => state.auth.errorMessage);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,33 +42,32 @@ const LoginModal = () => {
     if (modalState) {
       Animated.timing(top, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
       Animated.spring(scale, { toValue: 1 }).start();
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
     }
     if (!modalState) {
       setTimeout(() => {
         Animated.timing(top, {
           toValue: screenHeight,
-          duration: 0
+          duration: 0,
         }).start();
         Animated.spring(scale, { toValue: 1.3 }).start();
       }, 500);
 
       Animated.timing(translateY, {
         toValue: 1000,
-        duration: 500
+        duration: 500,
       }).start();
     }
   };
 
   const handleLogin = async () => {
-    await dispatch(AuthActions.signinUser(email, password));
-    await dispatch(AuthActions.closeLoginModal());
+    await dispatch(AuthActions.signinUser(email.trim(), password));
   };
 
   const focusEmail = () => {
@@ -82,8 +82,10 @@ const LoginModal = () => {
 
   const tapBackground = async () => {
     Keyboard.dismiss();
+    await dispatch(AuthActions.clearError());
     await dispatch(AuthActions.closeLoginModal());
   };
+
   return (
     <AnimatedContainer style={{ top: top }}>
       <TouchableWithoutFeedback onPress={tapBackground}>
@@ -93,14 +95,14 @@ const LoginModal = () => {
           style={{
             position: "absolute",
             width: "100%",
-            height: "100%"
+            height: "100%",
           }}
         />
       </TouchableWithoutFeedback>
       <KeyboardAvoidingView behavior="padding" enabled>
         <AnimatedModal
           style={{
-            transform: [{ scale: scale }, { translateY: translateY }]
+            transform: [{ scale: scale }, { translateY: translateY }],
           }}
         >
           {/* <Logo source={require("../assets/logo-dc.png")} /> */}
@@ -108,7 +110,7 @@ const LoginModal = () => {
           <EmailContainer>
             <IconEmail source={iconEmail} />
             <TextInput
-              onChangeText={email => setEmail(email)}
+              onChangeText={(email) => setEmail(email)}
               placeholder="Email"
               keyboardType="email-address"
               onFocus={focusEmail}
@@ -118,17 +120,22 @@ const LoginModal = () => {
             <IconPassword source={iconPassword} />
 
             <TextInput
-              onChangeText={password => setPassword(password)}
+              onChangeText={(password) => setPassword(password)}
               placeholder="Password"
               secureTextEntry={true}
               onFocus={focusPassword}
             />
           </PasswordContainer>
-          <TouchableOpacity onPress={handleLogin}>
-            <Button>
-              <ButtonText>Log In</ButtonText>
-            </Button>
-          </TouchableOpacity>
+
+          <Button
+            onPress={handleLogin}
+            disabled={email == "" || password == "" ? true : false}
+            email={email}
+            password={password}
+          >
+            <ButtonText>Log In</ButtonText>
+          </Button>
+          {errorState ? <Text>Please check your Login Credentials</Text> : null}
         </AnimatedModal>
       </KeyboardAvoidingView>
       {/* <SuccessAnim isActive={loginSuccess} /> */}
@@ -191,7 +198,8 @@ const TextInput = styled.TextInput`
   margin-top: 20px;
   padding-left: 44px;
 `;
-const Button = styled.View`
+
+const Button = styled.TouchableOpacity`
   background: #5263ff;
   width: 295px;
   height: 50px;
@@ -200,7 +208,15 @@ const Button = styled.View`
   border-radius: 10px;
   box-shadow: 0 10px 20px #c2cbff;
   margin-top: 20px;
+  background: ${({ email, password }) => {
+    if (email == "" || password == "") {
+      return "#1C1C37";
+    } else {
+      return " #5263ff";
+    }
+  }};
 `;
+
 const ButtonText = styled.Text`
   color: white;
   font-weight: 600;

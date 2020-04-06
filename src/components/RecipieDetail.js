@@ -6,7 +6,7 @@ import {
   StatusBar,
   ScrollView,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import styled from "styled-components";
 import IngredientList from "./IngredientList";
@@ -21,7 +21,7 @@ const screenWidth = Dimensions.get("window").width;
 const InsctructionWidth = screenWidth - 40;
 
 const RecipieDetail = ({ navigation, route }) => {
-  const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const dish = route.params.dish;
   const setPaddings = route.params.setPaddings;
@@ -45,7 +45,7 @@ const RecipieDetail = ({ navigation, route }) => {
           ? Platform.OS === "android"
             ? StatusBar.currentHeight + 30
             : 0
-          : null
+          : null,
       }}
     >
       <SafeAreaView>

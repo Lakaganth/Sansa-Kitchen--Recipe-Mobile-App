@@ -6,7 +6,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import styled from "styled-components";
 import CategoryBox from "../components/CategoryBox";
@@ -29,8 +29,8 @@ if (screenWidth >= 400) {
 const CategoryScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const modalState = useSelector(state => state.input.openCategoryModal);
-  const cat = useSelector(state => state.recipe.categories);
+  const modalState = useSelector((state) => state.input.openCategoryModal);
+  const cat = useSelector((state) => state.recipe.categories);
 
   // useEffect(() => {
   //   getCategories();
@@ -46,13 +46,14 @@ const CategoryScreen = ({ navigation }) => {
   return (
     <Container
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 20 : 0
+        paddingTop:
+          Platform.OS === "android" ? StatusBar.currentHeight + 20 : 0,
       }}
     >
       {modalState ? <CategoriesModal /> : null}
       <ScrollView showsVerticalScrollIndicator={true}>
         <ScreenTitle>Make Something Special?</ScreenTitle>
-        <SearchBarContainer>
+        {/* <SearchBarContainer>
           <KeyboardAvoidingView
             behavior="padding"
             enabled
@@ -60,13 +61,13 @@ const CategoryScreen = ({ navigation }) => {
           >
             <SearchInput placeholder="Find recipes..." />
           </KeyboardAvoidingView>
-        </SearchBarContainer>
+        </SearchBarContainer> */}
         <Subtitle>Categories</Subtitle>
-        <TouchableOpacity onPress={openModal}>
+        {/* <TouchableOpacity onPress={openModal}>
           <Ionicons name="md-add" size={32} style={{ paddingLeft: 20 }} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <CategoriesBoxContainer>
-          {cat.map(item => (
+          {cat.map((item) => (
             <CategoryBox
               key={item.cID}
               catID={item.cID}

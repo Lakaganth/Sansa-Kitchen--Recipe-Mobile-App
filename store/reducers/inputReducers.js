@@ -12,7 +12,9 @@ import {
   ERROR,
   CLEAR_INGREDIENT,
   CLEAR_INSTRUCTION,
-  SET_IMAGE_URL
+  SET_IMAGE_URL,
+  SET_INGREDIENT,
+  SET_INSTRUCTIONS,
 } from "../actions/inputAction";
 
 const initialState = {
@@ -21,7 +23,7 @@ const initialState = {
   openCategoryModal: false,
   ingredients: [],
   instructions: [],
-  cameraURL: ""
+  cameraURL: "",
 };
 
 export default (state = initialState, action) => {
@@ -45,7 +47,7 @@ export default (state = initialState, action) => {
       });
       return {
         ...state,
-        ingredients: removeArr
+        ingredients: removeArr,
       };
     case CLEAR_INGREDIENT:
       return { ...state, ingredients: [] };
@@ -60,7 +62,7 @@ export default (state = initialState, action) => {
       });
       return {
         ...state,
-        ingredients: removeInsArr
+        ingredients: removeInsArr,
       };
     case CLEAR_INSTRUCTION:
       return { ...state, instructions: [] };
@@ -70,6 +72,10 @@ export default (state = initialState, action) => {
       return { ...state, openCategoryModal: false };
     case SET_IMAGE_URL:
       return { ...state, cameraURL: action.url };
+    case SET_INGREDIENT:
+      return { ...state, ingredients: action.existingIngredients };
+    case SET_INSTRUCTIONS:
+      return { ...state, instructions: action.existingInstructions };
     default:
       return state;
   }

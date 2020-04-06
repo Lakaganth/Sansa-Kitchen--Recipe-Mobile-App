@@ -12,34 +12,36 @@ export const OPEN_CATEGORY_MODAL = "OPEN_CATEGORY_MODAL";
 export const CLOSE_CATEGORY_MODAL = "CLOSE_CATEGORY_MODAL";
 export const SET_IMAGE_URL = "SET_IMAGE_URL";
 export const ERROR = "ERROR";
+export const SET_INGREDIENT = "SET_INGREDIENT";
+export const SET_INSTRUCTIONS = "SET_INSTRUCTIONS";
 
 export const openIngredientsModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: OPEN_INGREDIENTS_MODAL });
   };
 };
 export const closeIngredientsModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLOSE_INGREDIENTS_MODAL });
   };
 };
 export const openInstructionModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: OPEN_INSTRUCTION_MODAL });
   };
 };
 export const closeInstructionModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLOSE_INSTRUCTION_MODAL });
   };
 };
 
 export const addIngredient = (ingName, ingQuantity) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const ingredient = {
         ingredientName: ingName,
-        ingredientQuantity: ingQuantity
+        ingredientQuantity: ingQuantity,
       };
 
       return dispatch({ type: ADD_INGREDIENT, ingredient });
@@ -48,8 +50,8 @@ export const addIngredient = (ingName, ingQuantity) => {
     }
   };
 };
-export const removeIngredient = index => {
-  return async dispatch => {
+export const removeIngredient = (index) => {
+  return async (dispatch) => {
     try {
       return dispatch({ type: REMOVE_INGREDIENT, index });
     } catch (err) {
@@ -57,8 +59,17 @@ export const removeIngredient = index => {
     }
   };
 };
-export const addInstruction = instruction => {
-  return async dispatch => {
+export const setIngredients = (existingIngredients) => {
+  return async (dispatch) => {
+    try {
+      return dispatch({ type: SET_INGREDIENT, existingIngredients });
+    } catch (err) {
+      return dispatch({ type: ERROR, err });
+    }
+  };
+};
+export const addInstruction = (instruction) => {
+  return async (dispatch) => {
     try {
       return dispatch({ type: ADD_INSTRUCTION, instruction });
     } catch (err) {
@@ -66,8 +77,8 @@ export const addInstruction = instruction => {
     }
   };
 };
-export const removeInstruction = index => {
-  return async dispatch => {
+export const removeInstruction = (index) => {
+  return async (dispatch) => {
     try {
       return dispatch({ type: REMOVE_INSTRUCTION, index });
     } catch (err) {
@@ -75,31 +86,40 @@ export const removeInstruction = index => {
     }
   };
 };
+export const setInstructions = (existingInstructions) => {
+  return async (dispatch) => {
+    try {
+      return dispatch({ type: SET_INSTRUCTIONS, existingInstructions });
+    } catch (err) {
+      return dispatch({ type: ERROR, err });
+    }
+  };
+};
 
 export const openCategoryModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: OPEN_CATEGORY_MODAL });
   };
 };
 export const closeCategoryModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLOSE_CATEGORY_MODAL });
   };
 };
 
 export const clearIngredientsArray = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLEAR_INGREDIENT });
   };
 };
 export const clearInstructionsArray = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLEAR_INSTRUCTION });
   };
 };
 
-export const setCameraURL = url => {
-  return async dispatch => {
+export const setCameraURL = (url) => {
+  return async (dispatch) => {
     return dispatch({ type: SET_IMAGE_URL, url });
   };
 };

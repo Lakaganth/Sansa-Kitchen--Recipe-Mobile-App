@@ -12,7 +12,7 @@ export const ALL_RECIPE_LISITNER = "ALL_RECIPE_LISITNER";
 export const ERROR = "ERROR";
 
 export const addCategory = (name, imageURL) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const category = { catName: name, catImg: imageURL };
 
@@ -28,7 +28,7 @@ export const addCategory = (name, imageURL) => {
   };
 };
 export const getCategories = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -36,7 +36,9 @@ export const getCategories = () => {
         .orderBy("catName", "asc")
         .get();
       const categories = [];
-      await res.forEach(doc => categories.push({ cID: doc.id, ...doc.data() }));
+      await res.forEach((doc) =>
+        categories.push({ cID: doc.id, ...doc.data() })
+      );
       return dispatch({ type: GET_CATEGORIES, categories });
     } catch (err) {
       return dispatch({ type: ERROR, err });
@@ -44,8 +46,8 @@ export const getCategories = () => {
   };
 };
 
-export const addRecipe = recipe => {
-  return async dispatch => {
+export const addRecipe = (recipe) => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -59,9 +61,26 @@ export const addRecipe = recipe => {
     }
   };
 };
+export const editRecipe = (rID, editedRecipe) => {
+  return async (dispatch) => {
+    try {
+      const res = await firebase
+        .firestore()
+        .collection("allRecipes")
+        .doc(rID)
+        .update(editedRecipe);
+
+      console.log(res);
+
+      // return dispatch({ type: ADD_RECIPE });
+    } catch (err) {
+      return dispatch({ type: ERROR, err });
+    }
+  };
+};
 
 export const getRecipes = (order = "desc") => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -70,7 +89,7 @@ export const getRecipes = (order = "desc") => {
         .get();
       let recipes = [];
 
-      await res.forEach(doc => recipes.push({ rID: doc.id, ...doc.data() }));
+      await res.forEach((doc) => recipes.push({ rID: doc.id, ...doc.data() }));
       return dispatch({ type: GET_RECIPES, recipes });
     } catch (err) {
       return dispatch({ type: ERROR, err });
@@ -79,7 +98,7 @@ export const getRecipes = (order = "desc") => {
 };
 
 export const addFavouritedBy = (userID, rID) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -113,10 +132,10 @@ export const addFavouritedBy = (userID, rID) => {
 };
 
 export const recipeListner = (obj, currentUser) => {
-  return async dispatch => {
+  return async (dispatch) => {
     let fav = [];
 
-    obj.filter(all => {
+    obj.filter((all) => {
       if (all.favouritedBy.includes(currentUser.id)) {
         fav.push(all);
       }
@@ -124,14 +143,27 @@ export const recipeListner = (obj, currentUser) => {
 
     const recListner = {
       recipies: obj,
-      favourites: fav
+      favourites: fav,
     };
 
     return dispatch({ type: RECIPE_LISITNER, recListner: recListner });
   };
 };
-export const allRecipeListner = obj => {
-  return async dispatch => {
+export const allRecipeListner = (obj) => {
+  return async (dispatch) => {
     return dispatch({ type: ALL_RECIPE_LISITNER, recListner: obj });
+  };
+};
+
+export const deleteRecipe = (rID) => {
+  return async (dispatch) => {
+    const res = await firebase
+      .firestore()
+      .collection("allRecipes")
+      .doc(rID)
+      .delete();
+    console.log(res);
+
+    return dispatch({ type: REMOVE_RECIPE });
   };
 };

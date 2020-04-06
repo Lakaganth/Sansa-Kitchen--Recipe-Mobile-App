@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableNativeFeedback,
-  FlatList
+  FlatList,
 } from "react-native";
 import SpecialsCard from "../components/SpecialsCard";
 import firebase from "../../config";
@@ -18,9 +18,10 @@ import * as RecipeActions from "../../store/actions/recipeActions";
 import TrendingBox from "../components/TrendingBox";
 
 const HomeScreen = ({ navigation }) => {
-  const recipesReduxs = useSelector(state => state.recipe.recipes);
+  const recipesReduxs = useSelector((state) => state.recipe.recipes);
   const dispatch = useDispatch();
   const [recipesRedux, setRecipesRedux] = useState(recipesReduxs);
+  console.log(navigation);
 
   useEffect(() => {
     StatusBar.setBarStyle("dark-content", true);
@@ -29,12 +30,11 @@ const HomeScreen = ({ navigation }) => {
     const addedRecipeListner = firebase
       .firestore()
       .collection("allRecipes")
-      .onSnapshot(async querySnapshot => {
+      .onSnapshot(async (querySnapshot) => {
         let recipeObj = [];
-        querySnapshot.forEach(async doc => {
+        querySnapshot.forEach(async (doc) => {
           recipeObj.push({ rID: doc.id, ...doc.data() });
         });
-
         await dispatch(RecipeActions.allRecipeListner(recipeObj));
         setRecipesRedux(recipeObj);
       });
@@ -58,7 +58,7 @@ const HomeScreen = ({ navigation }) => {
       </SubtitleContainer>
       <FlatList
         data={recipesRedux}
-        keyExtractor={item => item.rID}
+        keyExtractor={(item) => item.rID}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
@@ -74,13 +74,14 @@ const HomeScreen = ({ navigation }) => {
   return (
     <Container
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight + 40 : 0
+        paddingTop:
+          Platform.OS === "android" ? StatusBar.currentHeight + 40 : 0,
       }}
     >
       {recipesRedux.length > 0 ? (
         <FlatList
           data={recipesRedux}
-          keyExtractor={item => item.rID}
+          keyExtractor={(item) => item.rID}
           ListHeaderComponent={homeHeaderComp}
           showsVerticalScrollIndicator={true}
           renderItem={({ item }) => (

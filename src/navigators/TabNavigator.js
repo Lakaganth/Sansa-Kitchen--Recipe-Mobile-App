@@ -14,7 +14,7 @@ import AllRecipeTabNavigator from "./AllRecipeTabNavigator";
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
-  const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   return (
     <Tab.Navigator
@@ -36,7 +36,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="md-home" size={23} color={color} />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -45,7 +45,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Entypo name="open-book" size={23} color={color} />
-          )
+          ),
         }}
       />
       {currentUser ? (
@@ -54,8 +54,8 @@ export const TabNavigator = () => {
           component={AddRecipeNavigator}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="md-add-circle-outline" size={50} color={color} />
-            )
+              <Ionicons name="md-add" size={28} color={color} />
+            ),
           }}
         />
       ) : null}
@@ -66,7 +66,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="md-heart" size={23} color={color} />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -75,7 +75,7 @@ export const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="md-person" size={23} color={color} />
-          )
+          ),
         }}
       />
     </Tab.Navigator>

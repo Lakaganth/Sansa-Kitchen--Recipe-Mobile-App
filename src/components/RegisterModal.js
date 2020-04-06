@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Alert, Animated, Dimensions } from "react-native";
@@ -20,7 +20,8 @@ const screenHeight = Dimensions.get("window").height;
 
 const RegisterModal = () => {
   const dispatch = useDispatch();
-  const modalState = useSelector(state => state.auth.openRegisterModal);
+  const modalState = useSelector((state) => state.auth.openRegisterModal);
+  const errorState = useSelector((state) => state.auth.errorMessage);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -58,7 +59,7 @@ const RegisterModal = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
 
     const img = result.uri;
@@ -79,33 +80,32 @@ const RegisterModal = () => {
     if (modalState) {
       Animated.timing(top, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
       Animated.spring(scale, { toValue: 1 }).start();
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
     }
     if (!modalState) {
       setTimeout(() => {
         Animated.timing(top, {
           toValue: screenHeight,
-          duration: 0
+          duration: 0,
         }).start();
         Animated.spring(scale, { toValue: 1.3 }).start();
       }, 500);
 
       Animated.timing(translateY, {
         toValue: 1000,
-        duration: 500
+        duration: 500,
       }).start();
     }
   };
 
   const handleRegister = async () => {
-    await dispatch(AuthActions.registerUser(email, password, name, imgURL));
-    await dispatch(AuthActions.closeRegisterModal());
+    await dispatch(AuthActions.registerUser(email, password, name));
   };
 
   const focusEmail = () => {
@@ -131,14 +131,14 @@ const RegisterModal = () => {
           style={{
             position: "absolute",
             width: "100%",
-            height: "100%"
+            height: "100%",
           }}
         />
       </TouchableWithoutFeedback>
       <KeyboardAvoidingView behavior="padding" enabled>
         <AnimatedModal
           style={{
-            transform: [{ scale: scale }, { translateY: translateY }]
+            transform: [{ scale: scale }, { translateY: translateY }],
           }}
         >
           {/* <Logo source={require("../assets/logo-dc.png")} /> */}
@@ -146,7 +146,7 @@ const RegisterModal = () => {
           <TextContainer>
             <IconName source={iconName} />
             <TextInput
-              onChangeText={name => setName(name)}
+              onChangeText={(name) => setName(name)}
               placeholder="Name"
               keyboardType="default"
             />
@@ -154,7 +154,7 @@ const RegisterModal = () => {
           <TextContainer>
             <IconEmail source={iconEmail} />
             <TextInput
-              onChangeText={email => setEmail(email)}
+              onChangeText={(email) => setEmail(email)}
               placeholder="Email"
               keyboardType="email-address"
               onFocus={focusEmail}
@@ -164,7 +164,7 @@ const RegisterModal = () => {
             <IconPassword source={iconPassword} />
 
             <TextInput
-              onChangeText={password => setPassword(password)}
+              onChangeText={(password) => setPassword(password)}
               placeholder="Password"
               secureTextEntry={true}
               onFocus={focusPassword}
@@ -176,6 +176,7 @@ const RegisterModal = () => {
               <ButtonText>Register</ButtonText>
             </Button>
           </TouchableOpacity>
+          {errorState ? <Text>One of your input is not correct</Text> : null}
         </AnimatedModal>
       </KeyboardAvoidingView>
     </AnimatedContainer>
@@ -198,7 +199,7 @@ const Container = styled.View`
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 const Modal = styled.View`
   width: 335px;
-  height: 370px;
+  height: 390px;
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);

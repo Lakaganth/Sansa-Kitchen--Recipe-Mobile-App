@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Alert, Animated, Dimensions } from "react-native";
@@ -15,7 +15,7 @@ const screenHeight = Dimensions.get("window").height;
 
 const InstructionsModal = () => {
   const dispatch = useDispatch();
-  const modalState = useSelector(state => state.input.openInstructionModal);
+  const modalState = useSelector((state) => state.input.openInstructionModal);
 
   const [ins, setIns] = useState("");
   const [top, setTop] = useState(new Animated.Value(screenHeight));
@@ -30,26 +30,26 @@ const InstructionsModal = () => {
     if (modalState) {
       Animated.timing(top, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
       Animated.spring(scale, { toValue: 1 }).start();
       Animated.timing(translateY, {
         toValue: 0,
-        duration: 0
+        duration: 0,
       }).start();
     }
     if (!modalState) {
       setTimeout(() => {
         Animated.timing(top, {
           toValue: screenHeight,
-          duration: 0
+          duration: 0,
         }).start();
         Animated.spring(scale, { toValue: 1.3 }).start();
       }, 500);
 
       Animated.timing(translateY, {
         toValue: 1000,
-        duration: 500
+        duration: 500,
       }).start();
     }
   };
@@ -73,25 +73,24 @@ const InstructionsModal = () => {
           style={{
             position: "absolute",
             width: "100%",
-            height: "100%"
+            height: "100%",
           }}
         />
       </TouchableWithoutFeedback>
       <KeyboardAvoidingView behavior="padding" enabled>
         <AnimatedModal
           style={{
-            transform: [{ scale: scale }, { translateY: translateY }]
+            transform: [{ scale: scale }, { translateY: translateY }],
           }}
         >
           <Text>Add Ingredient</Text>
           <TextContainer>
             <TextInput
-              onChangeText={ins => setIns(ins)}
+              onChangeText={(ins) => setIns(ins)}
               placeholder="Instruction"
               keyboardType="default"
               multiline
               numberOfLines={4}
-              //   style={{ numberOfLines: 4 }}
             />
           </TextContainer>
           <TouchableOpacity onPress={handleAddInstruction}>

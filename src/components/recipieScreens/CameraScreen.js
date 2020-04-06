@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import {
   FontAwesome,
   Ionicons,
@@ -16,6 +17,7 @@ const CameraScreen = ({ navigation }) => {
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [cameraImage, setCameraImage] = useState(null);
   const [cameraImageURL, setCameraImageURL] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -62,6 +64,7 @@ const CameraScreen = ({ navigation }) => {
         quality: 0.3,
         aspect: [4, 3]
       });
+      setLoading(true);
       const img = photo.uri;
       const imgName = img.split("/").pop();
       const response = await fetch(img);
@@ -74,13 +77,18 @@ const CameraScreen = ({ navigation }) => {
       const url = await res.getDownloadURL();
 
       await disptach(InputActions.setCameraURL(url));
-
+      setLoading(false);
       navigation.navigate("AddRecipe");
     }
   };
 
   return (
     <View style={{ flex: 0.8 }}>
+      <Spinner
+        visible={loading}
+        textContent={"Loading..."}
+        textStyle={{ color: "white" }}
+      />
       <Camera
         style={{ flex: 1 }}
         type={cameraType}

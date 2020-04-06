@@ -10,23 +10,18 @@ export const CLOSE_LOGIN_MODAL = "CLOSE_LOGIN_MODAL";
 export const OPEN_REGISTER_MODAL = "OPEN_REGISTER_MODAL";
 export const CLOSE_REGISTER_MODAL = "CLOSE_REGISTER_MODAL";
 export const ERROR = "ERROR";
+export const CLEAR_ERROR = "CLEAR_ERROR";
 
-// export const registerNewUser = (newUser) =>{
-// return async dispatch => {
-//     try {
-
-//     } catch (err) {
-
-//     }
-// }
-
-// }
 export const signinUser = (email, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
+
+      await firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
       const getUserCollection = await firebase
         .firestore()
@@ -35,7 +30,7 @@ export const signinUser = (email, password) => {
 
       let currentUser;
 
-      getUserCollection.forEach(doc => {
+      getUserCollection.forEach((doc) => {
         const data = doc.data();
         if (user.user.uid == data.userID) {
           currentUser = data;
@@ -49,13 +44,13 @@ export const signinUser = (email, password) => {
   };
 };
 export const registerUser = (email, password, name) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const user = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
       await user.user.updateProfile({
-        displayName: name.trim()
+        displayName: name.trim(),
       });
 
       const userProfile = {
@@ -64,7 +59,7 @@ export const registerUser = (email, password, name) => {
         photoURL: null,
         userID: user.user.uid,
         favourites: [],
-        submittedRecipies: []
+        submittedRecipies: [],
       };
 
       const addUser = await firebase
@@ -81,7 +76,7 @@ export const registerUser = (email, password, name) => {
 };
 
 export const signOutUser = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       await firebase.auth().signOut();
       return dispatch({ type: SIGNOUT_USER });
@@ -94,22 +89,28 @@ export const signOutUser = () => {
 export const editUser = () => {};
 
 export const openLoginModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: OPEN_LOGIN_MODAL });
   };
 };
 export const closeLoginModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLOSE_LOGIN_MODAL });
   };
 };
 export const openRegisterModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: OPEN_REGISTER_MODAL });
   };
 };
 export const closeRegisterModal = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     return dispatch({ type: CLOSE_REGISTER_MODAL });
+  };
+};
+
+export const clearError = () => {
+  return async (dispatch) => {
+    return dispatch({ type: CLEAR_ERROR });
   };
 };

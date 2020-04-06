@@ -1,24 +1,65 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import styled from "styled-components";
-import { Picker, KeyboardAvoidingView, FlatList } from "react-native";
+import {
+  Picker,
+  KeyboardAvoidingView,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import SpecialsCard from "../components/SpecialsCard";
 import * as RecipeActions from "../../store/actions/recipeActions";
+import SigninModal from "../components/inputs/SigninModal";
+import LoginModal from "./../components/LoginModal";
+import firebase from "../../config";
+
+const { width, height } = Dimensions.get("window");
 
 const AllRecipeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const recipes = useSelector(state => state.recipe.recipes);
+  const recipes = useSelector((state) => state.recipe.recipes);
+  const loggedinUser = useSelector((state) => state.auth.user);
+  const modalState = useSelector((state) => state.auth.openLoginModal);
+  const user = useSelector((state) => state.user.currentUser);
   const [sortType, setSortType] = useState("desc");
   const [searchTerm, setSearchTerm] = useState("");
+  const [recipesRedux, setRecipesRedux] = useState(recipes);
+
+  const userRecipe = recipesRedux.filter((r) => r.ownerID == user.id);
 
   useEffect(() => {
+    // StatusBar.setBarStyle("dark-content", true);
     getRecipes();
-  }, [dispatch, sortType]);
+    // StatusBar.setHidden(true);
+    const addedRecipeListner = firebase
+      .firestore()
+      .collection("allRecipes")
+      .onSnapshot(async (querySnapshot) => {
+        let recipeObj = [];
+        querySnapshot.forEach(async (doc) => {
+          recipeObj.push({ rID: doc.id, ...doc.data() });
+        });
+        await dispatch(RecipeActions.allRecipeListner(recipeObj));
+        setRecipesRedux(recipeObj);
+      });
+
+    return () => {
+      addedRecipeListner();
+    };
+  }, []);
 
   const getRecipes = useCallback(async () => {
-    await dispatch(RecipeActions.getRecipes(sortType));
-  }, [dispatch, sortType]);
+    await dispatch(RecipeActions.getRecipes());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   getRecipes();
+  // }, [dispatch, sortType]);
+
+  // const getRecipes = useCallback(async () => {
+  //   await dispatch(RecipeActions.getRecipes(sortType));
+  // }, [dispatch, sortType]);
 
   const headerAllrecipeComponent = () => {
     return (
@@ -43,8 +84,9 @@ const AllRecipeScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <ScreenTitle>All Recipes</ScreenTitle>
-      <SearchBarContainer>
+      {modalState ? <LoginModal /> : null}
+      <ScreenTitle>Your Recipes</ScreenTitle>
+      {/* <SearchBarContainer>
         <KeyboardAvoidingView
           behavior="padding"
           enabled
@@ -52,30 +94,46 @@ const AllRecipeScreen = ({ navigation }) => {
         >
           <SearchInput
             placeholder="Find recipes..."
-            onChangeText={term => setSearchTerm(term)}
+            onChangeText={(term) => setSearchTerm(term)}
             value={searchTerm}
             keyboardType="default"
           />
         </KeyboardAvoidingView>
-      </SearchBarContainer>
+      </SearchBarContainer> */}
       <FlatListContainer>
-        <FlatList
-          data={recipes}
-          ListHeaderComponent={headerAllrecipeComponent}
-          keyExtractor={item => item.rID}
-          renderItem={({ item }) => {
-            return (
-              <SpecialsCard
-                recipe={item}
-                title={item.title}
-                description={item.desc}
-                splImg={item.image}
-                navigation={navigation}
-                setPaddings={true}
+        {loggedinUser ? (
+          <>
+            {userRecipe.length > 0 ? (
+              <FlatList
+                data={userRecipe}
+                ListHeaderComponent={headerAllrecipeComponent}
+                keyExtractor={(item) => item.rID}
+                renderItem={({ item }) => {
+                  return (
+                    <SpecialsCard
+                      recipe={item}
+                      rID={item.rID}
+                      title={item.title}
+                      description={item.desc}
+                      splImg={item.image}
+                      navigation={navigation}
+                      setPaddings={true}
+                    />
+                  );
+                }}
               />
-            );
-          }}
-        />
+            ) : (
+              <PrompContainer>
+                <Prompt>Add Your Recipes</Prompt>
+              </PrompContainer>
+            )}
+          </>
+        ) : (
+          <PrompContainer>
+            <Prompt>Log in to see your Recipe Submissions</Prompt>
+            <SigninModal />
+          </PrompContainer>
+        )}
       </FlatListContainer>
     </Container>
   );
@@ -138,4 +196,19 @@ const SearchInput = styled.TextInput`
   font-weight: 200;
   font-size: 16px;
   line-height: 27px;
+`;
+
+const Prompt = styled.Text`
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  color: #161c2b;
+  padding: 25px 0;
+`;
+const PrompContainer = styled.View`
+  width: 60%;
+  margin: ${height / 6}px auto;
+  align-items: center;
 `;

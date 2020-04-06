@@ -1,28 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Dimensions, TouchableNativeFeedback } from "react-native";
+
+import UserOptions from "./inputs/UserOptions";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 40;
 const imageWidth = cardWidth - 220;
 
-const SpecialsCard = props => {
-  const { favouriteScreen } = props;
+const SpecialsCard = (props) => {
+  const { favouriteScreen, recipe, setPaddings, rID, navigation } = props;
+  const [showOption, setShowOptions] = useState(false);
+
   return (
     <>
       {favouriteScreen ? (
         <TouchableNativeFeedback
           onPress={() =>
             props.navigation.navigate("DetailPadded", {
-              dish: props.recipe,
-              setPaddings: props.setPaddings,
-              favouriteScreen: props.favouriteScreen
+              dish: recipe,
+              setPaddings,
             })
           }
         >
           <Container
             style={{
-              width: cardWidth
+              width: cardWidth,
             }}
           >
             <ImageContainer
@@ -37,31 +40,44 @@ const SpecialsCard = props => {
           </Container>
         </TouchableNativeFeedback>
       ) : (
-        <TouchableNativeFeedback
-          onPress={() =>
-            props.navigation.navigate("Detail", {
-              dish: props.recipe,
-              setPaddings: props.setPaddings,
-              favouriteScreen: props.favouriteScreen
-            })
-          }
-        >
-          <Container
-            style={{
-              width: cardWidth
-            }}
+        <>
+          <TouchableNativeFeedback
+            onPress={() =>
+              props.navigation.navigate("Detail", {
+                dish: props.recipe,
+                setPaddings: props.setPaddings,
+                favouriteScreen: props.favouriteScreen,
+              })
+            }
+            onLongPress={() => setShowOptions(!showOption)}
           >
-            <ImageContainer
-              source={{ uri: props.splImg }}
-              style={{ width: imageWidth }}
-              resizeMode="cover"
-            />
-            <Content>
-              <Title>{props.title}</Title>
-              <Description>{props.description}</Description>
-            </Content>
-          </Container>
-        </TouchableNativeFeedback>
+            {!showOption ? (
+              <Container
+                style={{
+                  width: cardWidth,
+                }}
+              >
+                <ImageContainer
+                  source={{ uri: props.splImg }}
+                  style={{ width: imageWidth }}
+                  resizeMode="cover"
+                />
+                <Content>
+                  <Title>{props.title}</Title>
+
+                  <Description>{props.description}</Description>
+                </Content>
+              </Container>
+            ) : (
+              <UserOptions
+                setShowOptions={setShowOptions}
+                rID={rID}
+                navigation={navigation}
+                recipe={recipe}
+              />
+            )}
+          </TouchableNativeFeedback>
+        </>
       )}
     </>
   );

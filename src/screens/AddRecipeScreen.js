@@ -6,7 +6,7 @@ import {
   TouchableNativeFeedback,
   ScrollView,
   Picker,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Camera } from "expo-camera";
@@ -25,26 +25,27 @@ const screenWidth = Dimensions.get("window").width;
 const AddRecipeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const modalIngredientsState = useSelector(
-    state => state.input.openIngredientModal
+    (state) => state.input.openIngredientModal
   );
   const modalInstructionState = useSelector(
-    state => state.input.openInstructionModal
+    (state) => state.input.openInstructionModal
   );
 
-  const catRedux = useSelector(state => state.recipe.categories);
+  const catRedux = useSelector((state) => state.recipe.categories);
 
   const cat = [
     { cID: "lakaganthrox", catImg: "NoImg", catName: "Select one..." },
-    ...catRedux
+    ...catRedux,
   ];
-  const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
-  const [category, setCategory] = useState(cat.map(c => c.catName));
+  const [category, setCategory] = useState(cat.map((c) => c.catName));
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [catObj, setCatObj] = useState();
-  const ingredients = useSelector(state => state.input.ingredients);
-  const instructions = useSelector(state => state.input.instructions);
-  const cameraURL = useSelector(state => state.input.cameraURL);
+  const [categoryRec, setCategoryRec] = useState(false);
+  const ingredients = useSelector((state) => state.input.ingredients);
+  const instructions = useSelector((state) => state.input.instructions);
+  const cameraURL = useSelector((state) => state.input.cameraURL);
 
   const [rName, setRName] = useState("");
   const [desc, setDesc] = useState("");
@@ -52,6 +53,7 @@ const AddRecipeScreen = ({ navigation }) => {
   const [imgURL, setImgURL] = useState("");
   const [cameraImageURL, setCameraImageURL] = useState("");
   const [loading, setLoading] = useState(false);
+  // const [imgSelected, setImgSelected] = useState(false);
 
   useEffect(() => {
     getCategories();
@@ -76,13 +78,13 @@ const AddRecipeScreen = ({ navigation }) => {
   //   await setCameraImageURL(url);
   //   setLoading(false);
   // };
-
+  let imgSelected = false;
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 1,
     });
     setLoading(true);
     const img = result.uri;
@@ -96,6 +98,7 @@ const AddRecipeScreen = ({ navigation }) => {
     await res.put(blob);
     const url = await res.getDownloadURL();
 
+    imgSelected = true;
     await setImgURL(url);
     setLoading(false);
   };
@@ -115,8 +118,11 @@ const AddRecipeScreen = ({ navigation }) => {
       .child(`/images/recipe/submissions/camera/${imgname.substring(n)}`);
     console.log(res);
     await res.delete();
-    dispatch(InputActions.setCameraURL(""));
+    await dispatch(InputActions.setCameraURL(""));
   };
+  if (cameraURL) {
+    imgSelected = true;
+  }
 
   const openModal = async () => {
     await dispatch(InputActions.openIngredientsModal());
@@ -125,21 +131,23 @@ const AddRecipeScreen = ({ navigation }) => {
     await dispatch(InputActions.openInstructionModal());
   };
 
-  const removeIngredient = async index => {
+  const removeIngredient = async (index) => {
     await dispatch(InputActions.removeIngredient(index));
   };
-  const removeInstruction = async index => {
+  const removeInstruction = async (index) => {
     await dispatch(InputActions.removeInstruction(index));
   };
 
-  const setCatFunc = async value => {
+  const setCatFunc = async (value) => {
     await setCategory(value);
     await setSelectedCategory(value);
+    await setCategoryRec(true);
   };
 
   const handleAddRecipe = async () => {
-    const filteredCatArr = cat.filter(c => c.cID == selectedCategory);
+    const filteredCatArr = cat.filter((c) => c.cID == selectedCategory);
     await setCatObj(filteredCatArr[0]);
+
     setLoading(true);
     const recipe = {
       title: rName,
@@ -150,7 +158,7 @@ const AddRecipeScreen = ({ navigation }) => {
       image: cameraURL ? cameraURL : imgURL,
       ownerID: currentUser.id,
       favouritedBy: [],
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     await dispatch(RecipeActions.addRecipe(recipe));
@@ -159,8 +167,11 @@ const AddRecipeScreen = ({ navigation }) => {
     setImgURL("");
     await dispatch(InputActions.clearIngredientsArray());
     await dispatch(InputActions.clearInstructionsArray());
+    await dispatch(InputActions.setCameraURL(""));
     setLoading(false);
   };
+
+
 
   return (
     <Container>
@@ -176,13 +187,13 @@ const AddRecipeScreen = ({ navigation }) => {
         <FormContainer>
           <TextInput
             value={rName}
-            onChangeText={name => setRName(name)}
+            onChangeText={(name) => setRName(name)}
             placeholder="Recipe Name"
             keyboardType="default"
           />
           <TextInput
             value={desc}
-            onChangeText={description => setDesc(description)}
+            onChangeText={(description) => setDesc(description)}
             placeholder="Description"
             keyboardType="default"
           />
@@ -194,7 +205,7 @@ const AddRecipeScreen = ({ navigation }) => {
               onValueChange={setCatFunc}
             >
               {cat
-                ? cat.map(c => (
+                ? cat.map((c) => (
                     <Picker.Item
                       key={c.cID}
                       label={c.catName.toUpperCase()}
@@ -290,11 +301,19 @@ const AddRecipeScreen = ({ navigation }) => {
             </ImageContainer>
           )}
 
-          <TouchableNativeFeedback onPress={handleAddRecipe}>
-            <Button>
-              <ButtonText>Add</ButtonText>
-            </Button>
-          </TouchableNativeFeedback>
+          <Button
+            onPress={handleAddRecipe}
+            rName={rName}
+            imgSelected={imgSelected}
+            categoryRec={categoryRec}
+            disabled={
+              rName == "" || imgSelected == false || categoryRec == false
+                ? true
+                : false
+            }
+          >
+            <ButtonText>Add</ButtonText>
+          </Button>
         </FormContainer>
       </ScrollView>
     </Container>
@@ -415,7 +434,7 @@ const InsTextContainer = styled.View`
   align-items: center;
 `;
 
-const Button = styled.View`
+const Button = styled.TouchableOpacity`
   background: #5263ff;
   width: 150px;
   height: 50px;
@@ -425,6 +444,14 @@ const Button = styled.View`
   box-shadow: 0 10px 20px #c2cbff;
   margin: 0 ${screenWidth / 4}px;
   margin-top: 30px;
+  margin-bottom: 30px;
+  background: ${({ rName, imgSelected, categoryRec }) => {
+    if (rName == "" || imgSelected == false || categoryRec == false) {
+      return "gray";
+    } else {
+      return " #5263ff";
+    }
+  }};
 `;
 
 const ButtonText = styled.Text`

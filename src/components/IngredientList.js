@@ -4,62 +4,63 @@ import {
   Text,
   FlatList,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import styled from "styled-components";
 import { Ionicons } from "@expo/vector-icons";
+
+const { width, height } = Dimensions.get("window");
 
 const IngredientList = ({ ing }) => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <ListContainer>
-      <IngConatiner>
-        <Ingredients>{ing.ingredientName}</Ingredients>
-        <IngredientsQuant>{ing.ingredientQuantity}</IngredientsQuant>
-      </IngConatiner>
-      <TouchableOpacity onPress={() => setChecked(!checked)}>
+    <ListContainer onPress={() => setChecked(!checked)}>
+      <Ingredients>{ing.ingredientName}</Ingredients>
+      <IngredientsQuant>{ing.ingredientQuantity}</IngredientsQuant>
+      <IconContainer>
         {checked ? (
           <Ionicons name="ios-checkmark-circle" size={23} color="#f56565" />
         ) : (
           <Ionicons name="ios-checkmark-circle-outline" size={23} />
         )}
-      </TouchableOpacity>
+      </IconContainer>
     </ListContainer>
   );
 };
 
 export default IngredientList;
 
-const ListContainer = styled.View`
+const ListContainer = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
+  width: ${width}px;
   margin-bottom: 5px;
-`;
-
-const IngConatiner = styled.View`
-  position: relative;
-  width: 70%;
 `;
 
 const Ingredients = styled.Text`
   font-weight: 500;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.6);
-  width: 100%;
-  /* height: 40px; */
   text-transform: capitalize;
-  /* width: 70px; */
+  width: 60%;
+  flex: 2;
 `;
 
 const IngredientsQuant = styled.Text`
   font-weight: 500;
   font-size: 14px;
-  width: 40%;
+  flex: 1;
   color: rgba(0, 0, 0, 0.6);
   text-transform: capitalize;
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  right: 0;
+  right: 0; */
+`;
+
+const IconContainer = styled.View`
+  flex: 1;
+  padding-left: ${width / 3.5}px;
 `;

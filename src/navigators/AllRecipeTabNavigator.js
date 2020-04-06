@@ -10,12 +10,13 @@ import RecipeCardScreen from "../screens/RecipeCardScreen";
 const Tab = createMaterialTopTabNavigator();
 
 const AllRecipeTabNavigator = () => {
-  const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   return (
     <Container>
       <Tab.Navigator>
         <Tab.Screen name="All" component={AllRecipeScreenNavigator} />
+
         {/* <Tab.Screen name="All" component={RecipeCardScreen} /> */}
         {currentUser ? (
           <Tab.Screen name="Favs" component={FavourtieScreenNavigator} />
