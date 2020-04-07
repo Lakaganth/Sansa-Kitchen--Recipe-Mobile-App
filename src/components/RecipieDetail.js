@@ -82,11 +82,12 @@ const RecipieDetail = ({ navigation, route }) => {
             ) : null}
 
             <IngredientContainer>
-              <IngerdientContent>
-                <IngredientTitle>Ingredients</IngredientTitle>
-                <TouchableOpacity
-                  onPress={() => setShowIngredient(!showIngredient)}
-                >
+              <TouchableOpacity
+                onPress={() => setShowIngredient(!showIngredient)}
+              >
+                <IngerdientContent>
+                  <IngredientTitle>Ingredients</IngredientTitle>
+
                   {showIngredient ? (
                     <Ionicons
                       name="md-arrow-dropright"
@@ -100,8 +101,8 @@ const RecipieDetail = ({ navigation, route }) => {
                       style={{ paddingTop: 10 }}
                     />
                   )}
-                </TouchableOpacity>
-              </IngerdientContent>
+                </IngerdientContent>
+              </TouchableOpacity>
               {showIngredient ? (
                 <SafeAreaView style={{ marginBottom: 10 }}>
                   {dish.ingredients.map((ing, index) => (

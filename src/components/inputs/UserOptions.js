@@ -18,7 +18,7 @@ const UserOptions = (props) => {
 
   return (
     <>
-      <Container onLongPress={() => setShowOptions(false)}>
+      <Container onPress={() => setShowOptions(false)}>
         {user.id == recipe.ownerID ? (
           <>
             <Button onPress={handleEdit}>

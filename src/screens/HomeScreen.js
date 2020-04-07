@@ -12,7 +12,6 @@ import {
 import SpecialsCard from "../components/SpecialsCard";
 import firebase from "../../config";
 
-import LoginModal from "../components/LoginModal";
 import { useSelector, useDispatch } from "react-redux";
 import * as RecipeActions from "../../store/actions/recipeActions";
 import TrendingBox from "../components/TrendingBox";
@@ -21,7 +20,6 @@ const HomeScreen = ({ navigation }) => {
   const recipesReduxs = useSelector((state) => state.recipe.recipes);
   const dispatch = useDispatch();
   const [recipesRedux, setRecipesRedux] = useState(recipesReduxs);
-  console.log(navigation);
 
   useEffect(() => {
     StatusBar.setBarStyle("dark-content", true);
@@ -87,6 +85,7 @@ const HomeScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <SpecialsCard
               recipe={item}
+              rID={item.rID}
               title={item.title}
               description={item.desc}
               splImg={item.image}

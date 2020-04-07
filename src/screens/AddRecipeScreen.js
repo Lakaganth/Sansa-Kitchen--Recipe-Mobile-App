@@ -9,7 +9,6 @@ import {
   Dimensions,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
 import firebase from "../../config";
 import { useSelector, useDispatch } from "react-redux";
 import IngredientsModal from "../components/inputs/IngredientsModal";
@@ -170,8 +169,6 @@ const AddRecipeScreen = ({ navigation }) => {
     await dispatch(InputActions.setCameraURL(""));
     setLoading(false);
   };
-
-
 
   return (
     <Container>

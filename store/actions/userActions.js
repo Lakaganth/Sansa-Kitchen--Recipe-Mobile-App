@@ -5,8 +5,8 @@ export const GET_FAVOURITES = "GET_FAVOURITES";
 export const USER_LISITNER = "USER_LISITNER";
 export const ERROR = "ERROR";
 
-export const getUserData = userID => {
-  return async dispatch => {
+export const getUserData = (userID) => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -16,7 +16,7 @@ export const getUserData = userID => {
 
       let userProfile;
 
-      res.forEach(doc => {
+      res.forEach((doc) => {
         userProfile = { id: doc.id, ...doc.data() };
       });
 
@@ -27,8 +27,8 @@ export const getUserData = userID => {
   };
 };
 
-export const getUserSubmittedRecipes = userID => {
-  return async dispatch => {
+export const getUserSubmittedRecipes = (userID) => {
+  return async (dispatch) => {
     try {
       const res = await firebase
         .firestore()
@@ -37,7 +37,7 @@ export const getUserSubmittedRecipes = userID => {
         .get();
       const userRecipes = [];
 
-      res.forEach(doc => userRecipes.push({ rID: doc.id, ...doc.data() }));
+      res.forEach((doc) => userRecipes.push({ rID: doc.id, ...doc.data() }));
     } catch (err) {
       return dispatch({ type: ERROR, err });
     }
@@ -45,7 +45,7 @@ export const getUserSubmittedRecipes = userID => {
 };
 
 export const addToFavourites = (rID, currentUser) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       if (!currentUser.favourites.includes(rID)) {
         console.log("Add to favorites Array");
@@ -72,7 +72,7 @@ export const addToFavourites = (rID, currentUser) => {
           .get();
         const userCurrentFavourites = getUser.data().favourites;
         const removedFavourites = userCurrentFavourites.filter(
-          fav => fav !== rID
+          (fav) => fav !== rID
         );
 
         await firebase
@@ -87,8 +87,8 @@ export const addToFavourites = (rID, currentUser) => {
   };
 };
 
-export const getFavourites = userFav => {
-  return async dispatch => {
+export const getFavourites = (userFav) => {
+  return async (dispatch) => {
     let favouriteArr = [];
     try {
       const recipeRef = await firebase.firestore().collection("recipes");
@@ -96,9 +96,9 @@ export const getFavourites = userFav => {
       // .get();
 
       favouriteArr = await Promise.all(
-        userFav.map(fav => recipeRef.doc(fav).get())
+        userFav.map((fav) => recipeRef.doc(fav).get())
       );
-      const res = favouriteArr.map(fav => {
+      const res = favouriteArr.map((fav) => {
         const obj = { rID: fav.id, ...fav.data() };
         return obj;
       });
@@ -114,8 +114,8 @@ export const getFavourites = userFav => {
   };
 };
 
-export const userLisitner = obj => {
-  return async dispatch => {
+export const userLisitner = (obj) => {
+  return async (dispatch) => {
     return dispatch({ type: USER_LISITNER, currentUser: obj });
   };
 };
@@ -129,3 +129,14 @@ export const userLisitner = obj => {
 //         }
 //     }
 // }
+
+export const editUser = (editedUser) => {
+  return async (dispatch) => {
+    const res = await firebase
+      .firestore()
+      .collection("users")
+      .doc(editedUser.id)
+      .update(editedUser);
+    // return dispatch({ type: USER_LISITNER, currentUser: obj });
+  };
+};

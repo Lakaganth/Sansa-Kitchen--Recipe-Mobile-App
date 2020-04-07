@@ -10,7 +10,7 @@ import * as UserActions from "../../store/actions/userActions";
 import RegisterModal from "./../components/RegisterModal";
 import SigninModal from "../components/inputs/SigninModal";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const modalState = useSelector((state) => state.auth.openLoginModal);
   const registerModalState = useSelector(
@@ -49,13 +49,19 @@ const ProfileScreen = () => {
           <TitleContainer>
             <ScreenTitle>Profile</ScreenTitle>
             {user ? (
+              // <TouchableOpacity
+              //   onPress={() => Navigation.navigate("EditProfile")}
+              //   style={{ position: "absolute", top: 0, right: 20 }}
+              // >
               <MaterialCommunityIcons
+                onPress={() => navigation.navigate("EditProfile")}
                 name="pencil"
                 size={23}
                 color="#161C2B"
                 style={{ position: "absolute", top: 0, right: 20 }}
               />
-            ) : null}
+            ) : // </TouchableOpacity>
+            null}
           </TitleContainer>
 
           {user ? (
@@ -79,12 +85,12 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           )}
 
-          <Location>{user ? "India" : null}</Location>
+          {/* <Location>{user ? "India" : null}</Location>
           {user ? (
             <LevelContainer>
               <LevelTitle>Level : 25</LevelTitle>
             </LevelContainer>
-          ) : null}
+          ) : null} */}
         </ProfileContainer>
         <IconList>
           {!user ? (
